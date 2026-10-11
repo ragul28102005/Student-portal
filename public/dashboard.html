@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Student Dashboard - Erode Arts and Science College</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+
+    :root {
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #5f6f86;
+      --sidebar: #ffffff;
+      --border: #d7e0ec;
+      --blue: #087eaf;
+      --shadow: rgba(24,42,68,.08);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1220;
+      --card: #111b2d;
+      --text: #f3f6fc;
+      --muted: #a8bad3;
+      --sidebar: #050b16;
+      --border: #2b3a50;
+      --blue: #087eaf;
+      --shadow: rgba(0,0,0,.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background .2s, color .2s;
+    }
+
+    .navbar {
+      background: linear-gradient(105deg,#0b3155,#155987);
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 46px;
+      height: 46px;
+      background: white;
+      border-radius: 50%;
+      object-fit: contain;
+      padding: 2px;
+    }
+
+    .brand h2 {
+      font-size: 1.1rem;
+    }
+
+    .brand p {
+      font-size: .75rem;
+      margin-top: 3px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #ffffff44;
+      background: #ffffff20;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .logout-btn {
+      background: #dc3545;
+      color: white;
+      border: 0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 70px);
+    }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      padding: 20px 12px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+    }
+
+    .student-box {
+      text-align: center;
+      padding: 5px 5px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .student-avatar {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ffe2c7;
+      display: grid;
+      place-items: center;
+    }
+
+    .student-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .student-box h3 {
+      font-size: 1rem;
+    }
+
+    .student-box p {
+      font-size: .75rem;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: .9rem;
+      cursor: pointer;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      background: var(--blue);
+      color: white;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .page-heading h1 {
+      font-size: 1.55rem;
+    }
+
+    .page-heading p {
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4,minmax(0,1fr));
+      gap: 16px;
+    }
+
+    .info-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .info-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: #e4f4fb;
+      color: var(--blue);
+    }
+
+    [data-theme="dark"] .info-icon {
+      background: #18344e;
+      color: #68c8f0;
+    }
+
+    .info-details {
+      min-width: 0;
+    }
+
+    .info-details label {
+      display: block;
+      color: var(--muted);
+      font-size: .75rem;
+      margin-bottom: 4px;
+    }
+
+    .info-details span {
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .middle {
+      display: grid;
+      grid-template-columns: minmax(220px,1fr) minmax(300px,2fr);
+      gap: 20px;
+    }
+
+    .gender-card,
+    .quick-card,
+    .activity-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .gender-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .gender-image {
+      width: 90px;
+      height: 90px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #ffe2c7;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .gender-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .gender-info label {
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    .gender-info h3 {
+      color: var(--blue);
+      font-size: 1.3rem;
+      margin-top: 4px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .action-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 13px;
+      background: var(--blue);
+      color: white;
+      cursor: pointer;
+      text-align: left;
+      font-size: .9rem;
+    }
+
+    .action-btn i {
+      margin-right: 7px;
+    }
+
+    .action-btn:hover {
+      background: #05658e;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+    }
+
+    .empty-state i {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .empty-state h4 {
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    /* ============================================================
+       FEES SECTION
+       ============================================================ */
+
+    #feesSection {
+      width: 100%;
+    }
+
+    .fees-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 20px;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 25px;
+    }
+
+    .fee-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .fee-card h3 {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 10px;
+    }
+
+    .fee-card p {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .fees-details-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      width: 100%;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .fees-details-card h2 {
+      margin-bottom: 10px;
+    }
+
+    .fee-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fee-row:last-child {
+      border-bottom: none;
+    }
+
+    .fee-row span {
+      color: var(--muted);
+    }
+
+    .fee-row strong {
+      color: var(--text);
+    }
+
+    .fees-message {
+      display: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+
+    @media(max-width:1000px) {
+
+      .info-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+
+      .middle {
+        grid-template-columns: 1fr;
+      }
+
+      .fees-summary {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:700px) {
+
+      .navbar {
+        padding: 10px 12px;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand h2 {
+        font-size: .85rem;
+      }
+
+      .brand p {
+        font-size: .7rem;
+      }
+
+      .nav-actions {
+        gap: 7px;
+      }
+
+      #navUserName {
+        display: none;
+      }
+
+      .theme-button {
+        width: 38px;
+        height: 38px;
+      }
+
+      .layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 10px;
+      }
+
+      .student-box {
+        display: none;
+      }
+
+      .menu {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+
+      .menu li {
+        flex-shrink: 0;
+      }
+
+      .menu a {
+        white-space: nowrap;
+        padding: 10px;
+        font-size: .82rem;
+      }
+
+      .main {
+        padding: 15px;
+      }
+
+      .fee-row {
+        gap: 15px;
+      }
+    }
+
+    @media(max-width:420px) {
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gender-card {
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .gender-image {
+        width: 70px;
+        height: 70px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+
+  <nav class="navbar">
+
+    <div class="brand">
+
+      <img
+        src="erode-arts-science-college-logo.png"
+        alt="Erode Arts and Science College logo"
+      >
+
+      <div>
+        <h2>Erode Arts and Science College</h2>
+        <p>Student Portal</p>
+      </div>
+
+    </div>
+
+    <div class="nav-actions">
+
+      <span id="navUserName">Student</span>
+
+      <button
+        class="theme-button"
+        id="themeButton"
+        onclick="toggleTheme()"
+        title="Switch theme"
+        aria-label="Switch to dark mode"
+      >
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
+
+      <button
+        class="logout-btn"
+        onclick="logoutStudent()"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+
+    </div>
+
+  </nav>
+
+
+  <div class="layout">
+
+    <!-- ============================================================
+         SIDEBAR
+         ============================================================ -->
+
+    <aside class="sidebar">
+
+      <div class="student-box">
+
+        <div class="student-avatar">
+
+          <img
+            id="sidebarAvatar"
+            src="male.gif"
+            alt="Student image"
+          >
+
+        </div>
+
+        <h3 id="sidebarName">Loading...</h3>
+
+        <p>
+          Register No:
+          <span id="sidebarRegNo">---</span>
+        </p>
+
+      </div>
+
+
+      <ul class="menu">
+
+        <li>
+
+          <a
+            class="active"
+            href="#"
+            id="dashboardMenuLink"
+            onclick="return showDashboard(event)"
+          >
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+          </a>
+
+        </li>
+
+
+        <li>
+
+          <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            My Profile
+          </a>
+
+        </li>
+
+
+        <li>
+
+          <a
+            href="#"
+            id="marksMenuLink"
+            onclick="return showStudentMarks(event)"
+          >
+            <i class="fa-solid fa-chart-column"></i>
+            Marks
+          </a>
+
+        </li>
+
+
+        <!-- ========================================================
+             FEES - SAME PAGE
+             ======================================================== -->
+
+        <li>
+
+          <a
+            href="#"
+            id="feesMenuLink"
+            onclick="return showStudentFees(event)"
+          >
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+            Fees
+          </a>
+
+        </li>
+
+
+        <li>
+
+          <a href="attendance.html">
+            <i class="fa-solid fa-calendar-check"></i>
+            Attendance
+          </a>
+
+        </li>
+
+      </ul>
+
+    </aside>
+
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+
+    <main class="main">
+
+
+      <!-- ==========================================================
+           DEFAULT DASHBOARD
+           ========================================================== -->
+
+      <div id="dashboardContent">
+
+        <header class="page-heading dashboard-content">
+
+          <h1>Student Dashboard</h1>
+
+          <p>
+            Welcome to your student portal
+          </p>
+
+        </header>
+
+
+        <section class="info-grid dashboard-content">
+
+          <div class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="info-details">
+
+              <label>Name</label>
+
+              <span id="infoName">
+                Loading...
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-id-card"></i>
+            </div>
+
+            <div class="info-details">
+
+              <label>Register Number</label>
+
+              <span id="infoRegNo">
+                Loading...
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="info-details">
+
+              <label>Department</label>
+
+              <span id="infoDept">
+                Loading...
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-calendar"></i>
+            </div>
+
+            <div class="info-details">
+
+              <label>Year</label>
+
+              <span id="infoYear">
+                Loading...
+              </span>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <section class="middle dashboard-content">
+
+          <div class="gender-card">
+
+            <div class="gender-image">
+
+              <img
+                id="genderAvatar"
+                src="male.gif"
+                alt="Student gender image"
+              >
+
+            </div>
+
+            <div class="gender-info">
+
+              <label>Gender</label>
+
+              <h3 id="infoGender">
+                Loading...
+              </h3>
+
+            </div>
+
+          </div>
+
+
+          <div class="quick-card">
+
+            <div class="card-title">
+
+              <i class="fa-solid fa-bolt"></i>
+
+              Quick Actions
+
+            </div>
+
+
+            <div class="actions-grid">
+
+              <button
+                class="action-btn"
+                onclick="location.href='profile.html'"
+              >
+
+                <i class="fa-solid fa-user"></i>
+
+                My Profile
+
+              </button>
+
+
+              <button
+                class="action-btn"
+                onclick="return showStudentMarks(event)"
+              >
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                View Marks
+
+              </button>
+
+
+              <!-- ==================================================
+                   VIEW FEES - SAME PAGE
+                   ================================================== -->
+
+              <button
+                class="action-btn"
+                onclick="return showStudentFees(event)"
+              >
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                View Fees
+
+              </button>
+
+
+              <button
+                class="action-btn"
+                onclick="location.href='attendance.html'"
+              >
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                Attendance
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <section class="activity-card dashboard-content">
+
+          <div class="card-title">
+
+            <i class="fa-solid fa-clock"></i>
+
+            Recent Activity
+
+          </div>
+
+
+          <div class="empty-state">
+
+            <i class="fa-regular fa-file-lines"></i>
+
+            <h4>
+              No recent activity
+            </h4>
+
+            <p>
+              Your recent activities will appear here.
+            </p>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- ============================================================
+           MARKS SECTION
+           ============================================================ -->
+
+      <section
+        id="marksSection"
+        class="dashboard-content"
+        style="display:none;width:100%;"
+      >
+
+        <header class="page-heading">
+
+          <h1>
+            My Marks
+          </h1>
+
+          <p>
+            View your semester-wise marks and results.
+          </p>
+
+        </header>
+
+
+        <div
+          style="
+            width:100%;
+            height:75vh;
+            min-height:500px;
+            background:var(--card);
+            border:1px solid var(--border);
+            border-radius:10px;
+            overflow:hidden;
+          "
+        >
+
+          <iframe
+            id="marksFrame"
+            title="Student Marks"
+            src="about:blank"
+            style="
+              width:100%;
+              height:100%;
+              border:0;
+            "
+          ></iframe>
+
+        </div>
+
+      </section>
+
+
+      <!-- ============================================================
+           FEES SECTION - SAME DASHBOARD PAGE
+           ============================================================ -->
+
+      <section
+        id="feesSection"
+        class="dashboard-content"
+        style="display:none;width:100%;"
+      >
+
+        <header class="page-heading">
+
+          <h1>
+            My Fees
+          </h1>
+
+          <p>
+            View your latest fee details.
+          </p>
+
+        </header>
+
+
+        <div
+          id="feesMessage"
+          class="fees-message"
+        ></div>
+
+
+        <!-- Fee Summary -->
+
+        <div class="fees-summary">
+
+          <div class="fee-card">
+
+            <h3>
+              Total Fees
+            </h3>
+
+            <p id="totalFees">
+              ₹0
+            </p>
+
+          </div>
+
+
+          <div class="fee-card">
+
+            <h3>
+              Paid Fees
+            </h3>
+
+            <p id="paidFees">
+              ₹0
+            </p>
+
+          </div>
+
+
+          <div class="fee-card">
+
+            <h3>
+              Pending Fees
+            </h3>
+
+            <p id="pendingFees">
+              ₹0
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- Detailed Fees -->
+
+        <div class="fees-details-card">
+
+          <h2>
+            Fee Details
+          </h2>
+
+
+          <div class="fee-row">
+
+            <span>
+              Tuition Fee
+            </span>
+
+            <strong id="tuitionFee">
+              ₹0
+            </strong>
+
+          </div>
+
+
+          <div class="fee-row">
+
+            <span>
+              Tuition Status
+            </span>
+
+            <strong id="tuitionStatus">
+              -
+            </strong>
+
+          </div>
+
+
+          <div class="fee-row">
+
+            <span>
+              Exam Fee
+            </span>
+
+            <strong id="examFee">
+              ₹0
+            </strong>
+
+          </div>
+
+
+          <div class="fee-row">
+
+            <span>
+              Exam Status
+            </span>
+
+            <strong id="examStatus">
+              -
+            </strong>
+
+          </div>
+
+
+          <div class="fee-row">
+
+            <span>
+              Hostel Fee
+            </span>
+
+            <strong id="hostelFee">
+              ₹0
+            </strong>
+
+          </div>
+
+
+          <div class="fee-row">
+
+            <span>
+              Hostel Status
+            </span>
+
+            <strong id="hostelStatus">
+              -
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <script>
+
+    /* ============================================================
+       THEME
+       ============================================================ */
+
+    function applyTheme(theme) {
+
+      const root = document.documentElement;
+
+      const icon =
+        document.getElementById("themeIcon");
+
+      const button =
+        document.getElementById("themeButton");
+
+
+      if (theme === "dark") {
+
+        root.setAttribute(
+          "data-theme",
+          "dark"
+        );
+
+        icon.className =
+          "fa-solid fa-sun";
+
+        button.setAttribute(
+          "aria-label",
+          "Switch to light mode"
+        );
+
+        button.title =
+          "Switch to light mode";
+
+      } else {
+
+        root.removeAttribute(
+          "data-theme"
+        );
+
+        icon.className =
+          "fa-solid fa-moon";
+
+        button.setAttribute(
+          "aria-label",
+          "Switch to dark mode"
+        );
+
+        button.title =
+          "Switch to dark mode";
+
+      }
+
+
+      try {
+
+        localStorage.setItem(
+          "studentDashboardTheme",
+          theme
+        );
+
+      } catch (error) {}
+
+    }
+
+
+    function toggleTheme() {
+
+      const isDark =
+        document.documentElement
+          .getAttribute("data-theme") === "dark";
+
+      applyTheme(
+        isDark ? "light" : "dark"
+      );
+
+    }
+
+
+    (function initialiseTheme() {
+
+      let savedTheme = "light";
+
+      try {
+
+        savedTheme =
+          localStorage.getItem(
+            "studentDashboardTheme"
+          ) || "light";
+
+      } catch (error) {}
+
+      applyTheme(savedTheme);
+
+    })();
+
+
+    /* ============================================================
+       GENDER IMAGE
+       ============================================================ */
+
+    function setGenderImage(gender) {
+
+      const value =
+        String(gender || "")
+          .trim()
+          .toLowerCase();
+
+
+      const imageFile =
+        value === "male"
+          ? "male.gif"
+          : value === "female"
+            ? "female.gif"
+            : "";
+
+
+      document.getElementById(
+        "infoGender"
+      ).textContent =
+        gender || "Not Specified";
+
+
+      [
+        "genderAvatar",
+        "sidebarAvatar"
+      ].forEach(function(id) {
+
+        const image =
+          document.getElementById(id);
+
+        if (!image) return;
+
+
+        if (!imageFile) {
+
+          image.removeAttribute("src");
+
+          image.style.display =
+            "none";
+
+          image.alt =
+            "Gender not specified";
+
+          return;
+
+        }
+
+
+        image.onerror =
+          function() {
+
+            this.onerror = null;
+
+            this.style.display =
+              "none";
+
+            console.error(
+              "Cannot load " +
+              imageFile +
+              ". Check that the file is in the public folder."
+            );
+
+          };
+
+
+        image.src =
+          imageFile;
+
+        image.alt =
+          value === "male"
+            ? "Male student"
+            : "Female student";
+
+        image.style.display =
+          "block";
+
+      });
+
+    }
+
+
+    /* ============================================================
+       LOAD DASHBOARD DATA
+       ============================================================ */
+
+    async function loadDashboardData() {
+
+      let studentFromStorage;
+
+
+      try {
+
+        studentFromStorage =
+          JSON.parse(
+            sessionStorage.getItem("student") ||
+            localStorage.getItem("student") ||
+            "null"
+          );
+
+      } catch (error) {
+
+        studentFromStorage = null;
+
+      }
+
+
+      if (
+        !studentFromStorage ||
+        !studentFromStorage.registerNo
+      ) {
+
+        alert(
+          "Please log in again."
+        );
+
+        window.location.href =
+          "/";
+
+        return;
+
+      }
+
+
+      const registerNo =
+        studentFromStorage.registerNo;
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/student/" +
+            encodeURIComponent(registerNo)
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.success ||
+          !result.student
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Unable to load student details."
+          );
+
+        }
+
+
+        const student =
+          result.student;
+
+
+        document.getElementById(
+          "navUserName"
+        ).textContent =
+          student.name ||
+          "Student";
+
+
+        document.getElementById(
+          "sidebarName"
+        ).textContent =
+          student.name ||
+          "N/A";
+
+
+        document.getElementById(
+          "sidebarRegNo"
+        ).textContent =
+          student.registerNo ||
+          registerNo;
+
+
+        document.getElementById(
+          "infoName"
+        ).textContent =
+          student.name ||
+          "N/A";
+
+
+        document.getElementById(
+          "infoRegNo"
+        ).textContent =
+          student.registerNo ||
+          registerNo;
+
+
+        document.getElementById(
+          "infoDept"
+        ).textContent =
+          student.department ||
+          "N/A";
+
+
+        document.getElementById(
+          "infoYear"
+        ).textContent =
+          student.year ||
+          "N/A";
+
+
+        setGenderImage(
+          student.gender
+        );
+
+
+        const updatedStudent =
+          {
+            ...studentFromStorage,
+            ...student
+          };
+
+
+        try {
+
+          if (
+            sessionStorage.getItem(
+              "student"
+            )
+          ) {
+
+            sessionStorage.setItem(
+              "student",
+              JSON.stringify(
+                updatedStudent
+              )
+            );
+
+          }
+
+
+          if (
+            localStorage.getItem(
+              "student"
+            )
+          ) {
+
+            localStorage.setItem(
+              "student",
+              JSON.stringify(
+                updatedStudent
+              )
+            );
+
+          }
+
+        } catch (error) {}
+
+      } catch (error) {
+
+        console.error(
+          "Dashboard loading error:",
+          error
+        );
+
+
+        document.getElementById(
+          "infoName"
+        ).textContent =
+          "Unable to load";
+
+
+        document.getElementById(
+          "infoGender"
+        ).textContent =
+          "Unavailable";
+
+
+        alert(
+          error.message ||
+          "Please check that the Node.js server is running."
+        );
+
+      }
+
+    }
+
+
+    /* ============================================================
+       SHOW DASHBOARD
+       ============================================================ */
+
+    function showDashboard(event) {
+
+      if (event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+      }
+
+
+      document.querySelectorAll(
+        ".main > .dashboard-content"
+      ).forEach(function(element) {
+
+        element.style.display =
+          "none";
+
+      });
+
+
+      const dashboardContent =
+        document.getElementById(
+          "dashboardContent"
+        );
+
+
+      if (dashboardContent) {
+
+        dashboardContent.style.display =
+          "block";
+
+      }
+
+
+      document.querySelectorAll(
+        ".menu a"
+      ).forEach(function(link) {
+
+        link.classList.remove(
+          "active"
+        );
+
+      });
+
+
+      const dashboardMenuLink =
+        document.getElementById(
+          "dashboardMenuLink"
+        );
+
+
+      if (dashboardMenuLink) {
+
+        dashboardMenuLink.classList.add(
+          "active"
+        );
+
+      }
+
+
+      return false;
+
+    }
+
+
+    /* ============================================================
+       SHOW STUDENT MARKS
+       ============================================================ */
+
+    function showStudentMarks(event) {
+
+      if (event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+      }
+
+
+      const marksSection =
+        document.getElementById(
+          "marksSection"
+        );
+
+
+      const marksFrame =
+        document.getElementById(
+          "marksFrame"
+        );
+
+
+      if (
+        !marksSection ||
+        !marksFrame
+      ) {
+
+        console.error(
+          "Marks section or iframe is missing."
+        );
+
+        return false;
+
+      }
+
+
+      /* Hide dashboard content */
+
+      document.getElementById(
+        "dashboardContent"
+      ).style.display =
+        "none";
+
+
+      /* Hide Fees */
+
+      const feesSection =
+        document.getElementById(
+          "feesSection"
+        );
+
+
+      if (feesSection) {
+
+        feesSection.style.display =
+          "none";
+
+      }
+
+
+      /* Show Marks */
+
+      marksSection.style.display =
+        "block";
+
+
+      /* Load marks page */
+
+      if (!marksFrame.dataset.loaded) {
+
+        marksFrame.src =
+          "/marks.html";
+
+        marksFrame.dataset.loaded =
+          "true";
+
+      }
+
+
+      /* Active menu */
+
+      document.querySelectorAll(
+        ".menu a"
+      ).forEach(function(link) {
+
+        link.classList.remove(
+          "active"
+        );
+
+      });
+
+
+      const marksMenuLink =
+        document.getElementById(
+          "marksMenuLink"
+        );
+
+
+      if (marksMenuLink) {
+
+        marksMenuLink.classList.add(
+          "active"
+        );
+
+      }
+
+
+      return false;
+
+    }
+
+
+    /* ============================================================
+       SHOW STUDENT FEES - SAME PAGE
+       ============================================================ */
+
+    async function showStudentFees(event) {
+
+      if (event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+      }
+
+
+      const feesSection =
+        document.getElementById(
+          "feesSection"
+        );
+
+
+      if (!feesSection) {
+
+        console.error(
+          "Fees section is missing."
+        );
+
+        return false;
+
+      }
+
+
+      /* Hide Dashboard */
+
+      const dashboardContent =
+        document.getElementById(
+          "dashboardContent"
+        );
+
+
+      if (dashboardContent) {
+
+        dashboardContent.style.display =
+          "none";
+
+      }
+
+
+      /* Hide Marks */
+
+      const marksSection =
+        document.getElementById(
+          "marksSection"
+        );
+
+
+      if (marksSection) {
+
+        marksSection.style.display =
+          "none";
+
+      }
+
+
+      /* Show Fees */
+
+      feesSection.style.display =
+        "block";
+
+
+      /* Active menu */
+
+      document.querySelectorAll(
+        ".menu a"
+      ).forEach(function(link) {
+
+        link.classList.remove(
+          "active"
+        );
+
+      });
+
+
+      const feesMenuLink =
+        document.getElementById(
+          "feesMenuLink"
+        );
+
+
+      if (feesMenuLink) {
+
+        feesMenuLink.classList.add(
+          "active"
+        );
+
+      }
+
+
+      /* Get logged-in student */
+
+      let student = null;
+
+
+      try {
+
+        student =
+          JSON.parse(
+            sessionStorage.getItem(
+              "student"
+            ) ||
+            localStorage.getItem(
+              "student"
+            ) ||
+            "null"
+          );
+
+      } catch (error) {
+
+        console.error(
+          "Unable to read student information:",
+          error
+        );
+
+      }
+
+
+      /* Check login */
+
+      if (
+        !student ||
+        !student.registerNo
+      ) {
+
+        alert(
+          "Please log in again."
+        );
+
+        window.location.href =
+          "/";
+
+        return false;
+
+      }
+
+
+      const registerNo =
+        student.registerNo;
+
+
+      /* Reset message */
+
+      const feesMessage =
+        document.getElementById(
+          "feesMessage"
+        );
+
+
+      if (feesMessage) {
+
+        feesMessage.style.display =
+          "none";
+
+      }
+
+
+      try {
+
+        /* ========================================================
+           GET FEES
+           ======================================================== */
+
+        const response =
+          await fetch(
+            "/api/student/" +
+            encodeURIComponent(registerNo) +
+            "/fees"
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.success
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Unable to load fees."
+          );
+
+        }
+
+
+        const fees =
+          result.fees;
+
+
+        /* ========================================================
+           NO FEES
+           ======================================================== */
+
+        if (!fees) {
+
+          if (feesMessage) {
+
+            feesMessage.textContent =
+              "No fee details are available.";
+
+            feesMessage.style.display =
+              "block";
+
+          }
+
+
+          document.getElementById(
+            "totalFees"
+          ).textContent =
+            "₹0";
+
+
+          document.getElementById(
+            "paidFees"
+          ).textContent =
+            "₹0";
+
+
+          document.getElementById(
+            "pendingFees"
+          ).textContent =
+            "₹0";
+
+
+          document.getElementById(
+            "tuitionFee"
+          ).textContent =
+            "₹0";
+
+
+          document.getElementById(
+            "tuitionStatus"
+          ).textContent =
+            "-";
+
+
+          document.getElementById(
+            "examFee"
+          ).textContent =
+            "₹0";
+
+
+          document.getElementById(
+            "examStatus"
+          ).textContent =
+            "-";
+
+
+          document.getElementById(
+            "hostelFee"
+          ).textContent =
+            "₹0";
+
+
+          document.getElementById(
+            "hostelStatus"
+          ).textContent =
+            "-";
+
+
+          return false;
+
+        }
+
+
+        /* ========================================================
+           DISPLAY FEES
+           ======================================================== */
+
+        document.getElementById(
+          "totalFees"
+        ).textContent =
+          "₹" +
+          Number(
+            fees.total_fees || 0
+          ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+          "paidFees"
+        ).textContent =
+          "₹" +
+          Number(
+            fees.paid_fees || 0
+          ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+          "pendingFees"
+        ).textContent =
+          "₹" +
+          Number(
+            fees.pending_fees || 0
+          ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+          "tuitionFee"
+        ).textContent =
+          "₹" +
+          Number(
+            fees.tuition_fee || 0
+          ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+          "tuitionStatus"
+        ).textContent =
+          fees.tuition_status ||
+          "-";
+
+
+        document.getElementById(
+          "examFee"
+        ).textContent =
+          "₹" +
+          Number(
+            fees.exam_fee || 0
+          ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+          "examStatus"
+        ).textContent =
+          fees.exam_status ||
+          "-";
+
+
+        document.getElementById(
+          "hostelFee"
+        ).textContent =
+          "₹" +
+          Number(
+            fees.hostel_fee || 0
+          ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+          "hostelStatus"
+        ).textContent =
+          fees.hostel_status ||
+          "-";
+
+
+      } catch (error) {
+
+        console.error(
+          "Fees loading error:",
+          error
+        );
+
+
+        if (feesMessage) {
+
+          feesMessage.textContent =
+            error.message ||
+            "Unable to load fee details.";
+
+          feesMessage.style.display =
+            "block";
+
+        }
+
+      }
+
+
+      return false;
+
+    }
+
+
+    /* ============================================================
+       LOGOUT
+       ============================================================ */
+
+    function logoutStudent() {
+
+      sessionStorage.removeItem(
+        "student"
+      );
+
+      localStorage.removeItem(
+        "student"
+      );
+
+      window.location.href =
+        "/";
+
+    }
+
+
+    /* ============================================================
+       START DASHBOARD
+       ============================================================ */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      loadDashboardData
+    );
+
+  </script>
+
+</body>
+</html>

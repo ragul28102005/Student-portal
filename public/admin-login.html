@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Admin Login - Erode Arts and Science College Student Portal"
+    >
+
+    <title>
+        Admin Login - Erode Arts and Science College
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="./admin-login.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- =========================================
+         MAIN LOGIN CONTAINER
+    ========================================== -->
+
+    <main class="login-container">
+
+        <div class="login-box">
+
+            <!-- =========================================
+                 COLLEGE LOGO
+            ========================================== -->
+
+            <div class="logo-container">
+
+                <img
+                    src="./erode-arts-science-college-logo.png"
+                    class="logo"
+                    id="collegeLogo"
+                    alt="Erode Arts and Science College Logo"
+                    onerror="this.style.display='none';"
+                >
+
+            </div>
+
+
+            <!-- =========================================
+                 COLLEGE NAME
+            ========================================== -->
+
+            <h1>
+                Erode Arts and Science College
+            </h1>
+
+
+            <!-- =========================================
+                 PORTAL NAME
+            ========================================== -->
+
+            <p class="portal-title">
+                Student Management Portal
+            </p>
+
+
+            <!-- =========================================
+                 PAGE TITLE
+            ========================================== -->
+
+            <h2>
+                Admin Login
+            </h2>
+
+
+            <!-- =========================================
+                 DESCRIPTION
+            ========================================== -->
+
+            <p class="login-description">
+                Login to manage student profiles, marks, fees and attendance.
+            </p>
+
+
+            <!-- =========================================
+                 ADMIN LOGIN FORM
+            ========================================== -->
+
+            <form
+                id="adminLoginForm"
+                autocomplete="on"
+                novalidate
+            >
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+                    <label for="adminUsername">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="adminUsername"
+                        name="username"
+                        placeholder="Enter admin username"
+                        autocomplete="username"
+                        maxlength="50"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="adminPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        name="password"
+                        placeholder="Enter admin password"
+                        autocomplete="current-password"
+                        maxlength="100"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SHOW PASSWORD -->
+
+                <div class="show-password">
+
+                    <input
+                        type="checkbox"
+                        id="showPassword"
+                    >
+
+                    <label for="showPassword">
+                        Show Password
+                    </label>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    id="adminLoginButton"
+                >
+                    <span id="loginButtonText">
+                        Admin Login
+                    </span>
+                </button>
+
+            </form>
+
+
+            <!-- =========================================
+                 LOGIN MESSAGE
+            ========================================== -->
+
+            <div
+                id="adminLoginMessage"
+                class="login-message"
+                role="alert"
+                aria-live="polite"
+            ></div>
+
+
+            <!-- =========================================
+                 STUDENT LOGIN LINK
+            ========================================== -->
+
+            <div class="student-login-link">
+
+                <a href="/">
+                    ← Student Login
+                </a>
+
+            </div>
+
+
+            <!-- =========================================
+                 FOOTER
+            ========================================== -->
+
+            <div class="login-footer">
+
+                <p>
+                    Erode Arts and Science College
+                </p>
+
+                <span>
+                    Admin Management System
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         ADMIN LOGIN JAVASCRIPT
+    ========================================== -->
+
+    <script src="./admin-login.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fees Management - Student Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #12355b;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #1d70b8;
+        }
+
+        .logout-btn {
+            width: calc(100% - 30px);
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            background: #dc3545;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            font-size: 30px;
+            color: #12355b;
+        }
+
+        /* ================= MESSAGE ================= */
+
+        #message {
+            display: none;
+            padding: 13px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-box {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .search-box h2 {
+            margin-bottom: 15px;
+            color: #12355b;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-row input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 7px;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #1769aa;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #12558c;
+        }
+
+        .btn-success {
+            background: #198754;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #157347;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        /* ================= STUDENT ================= */
+
+        .student-card {
+            display: none;
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .student-card h2 {
+            color: #12355b;
+            margin-bottom: 15px;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-item span {
+            display: block;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .info-item strong {
+            font-size: 17px;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .summary-card p {
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .summary-card h2 {
+            font-size: 27px;
+        }
+
+        .total {
+            border-left: 5px solid #1769aa;
+        }
+
+        .paid {
+            border-left: 5px solid #198754;
+        }
+
+        .pending {
+            border-left: 5px solid #dc3545;
+        }
+
+        /* ================= FEES ================= */
+
+        .fees-section {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            color: #12355b;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #12355b;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-partial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .no-fee-message {
+            display: none;
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 8px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            color: #9a3412;
+            font-weight: 600;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-container {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-top: 25px;
+        }
+
+        .form-container h2 {
+            color: #12355b;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: 2px solid #1769aa;
+            border-color: #1769aa;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout-btn {
+                position: relative;
+                left: 0;
+                bottom: auto;
+                width: 100%;
+                margin-top: 15px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .student-info,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🎓 Student Portal
+    </div>
+
+    <a href="/admin-dashboard.html">
+        🏠 Dashboard
+    </a>
+
+    <a href="/admin-students.html">
+        👨‍🎓 Students
+    </a>
+
+    <a href="/admin-marks.html">
+        📚 Marks
+    </a>
+
+    <a href="/admin-fees.html" class="active">
+        💰 Fees
+    </a>
+
+    <a href="/admin-attendance.html">
+        📊 Attendance
+    </a>
+
+    <button class="logout-btn" onclick="logout()">
+        Logout
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Fees Management</h1>
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div id="message"></div>
+
+
+    <!-- =================================================
+         SEARCH
+    ================================================== -->
+
+    <div class="search-box">
+
+        <h2>Search Student Fees</h2>
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="searchRegisterNo"
+                placeholder="Enter Student Register Number"
+            >
+
+            <button
+                class="btn-primary"
+                onclick="searchFees()"
+            >
+                🔍 Search
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         STUDENT INFORMATION
+    ================================================== -->
+
+    <div
+        class="student-card"
+        id="studentCard"
+    >
+
+        <h2>Student Information</h2>
+
+        <div class="student-info">
+
+            <div class="info-item">
+
+                <span>Student Name</span>
+
+                <strong id="studentName">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="info-item">
+
+                <span>Register Number</span>
+
+                <strong id="studentRegisterNo">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================== -->
+
+    <div
+        class="summary"
+        id="summary"
+    >
+
+        <div class="summary-card total">
+
+            <p>Total Fees</p>
+
+            <h2 id="totalFees">
+                ₹0
+            </h2>
+
+        </div>
+
+        <div class="summary-card paid">
+
+            <p>Paid Fees</p>
+
+            <h2 id="paidFees">
+                ₹0
+            </h2>
+
+        </div>
+
+        <div class="summary-card pending">
+
+            <p>Pending Fees</p>
+
+            <h2 id="pendingFees">
+                ₹0
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         FEE DETAILS
+    ================================================== -->
+
+    <div
+        class="fees-section"
+        id="feesSection"
+    >
+
+        <div class="section-header">
+
+            <h2>Fee Details</h2>
+
+            <button
+                class="btn-success"
+                onclick="openAddForm()"
+            >
+                + Add Fee Details
+            </button>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Fee Type</th>
+
+                        <th>Amount</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>Tuition Fee</td>
+
+                        <td id="tuitionFee">
+                            ₹0
+                        </td>
+
+                        <td id="tuitionStatus">
+                            -
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Exam Fee</td>
+
+                        <td id="examFee">
+                            ₹0
+                        </td>
+
+                        <td id="examStatus">
+                            -
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Hostel Fee</td>
+
+                        <td id="hostelFee">
+                            ₹0
+                        </td>
+
+                        <td id="hostelStatus">
+                            -
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="no-fee-message" id="noFeeMessage">
+            No fee record has been added for this student yet.
+            Click <strong>+ Add Fee Details</strong> to add the fees first.
+            Edit and Update will appear only after the fee record is saved.
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="btn-warning"
+                id="editButton"
+                onclick="openEditForm()"
+                style="display:none;"
+            >
+                ✏️ Edit Fees
+            </button>
+
+            <button
+                class="btn-danger"
+                id="deleteButton"
+                onclick="deleteFees()"
+                style="display:none;"
+            >
+                🗑 Delete Fees
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         ADD / EDIT FORM
+    ================================================== -->
+
+    <div
+        class="form-container"
+        id="feeForm"
+    >
+
+        <h2 id="formTitle">
+            Add Fee Details
+        </h2>
+
+        <form id="feeDetailsForm">
+
+            <div class="form-grid">
+
+                <!-- REGISTER NUMBER -->
+
+                <div class="form-group">
+
+                    <label>
+                        Student Register Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerNo"
+                        readonly
+                        required
+                    >
+
+                </div>
+
+
+                <!-- TUITION -->
+
+                <div class="form-group">
+
+                    <label>
+                        Tuition Fee
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tuitionFeeInput"
+                        min="0"
+                        value="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tuition Status
+                    </label>
+
+                    <select id="tuitionStatusInput">
+
+                        <option value="Paid">
+                            Paid
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Partial">
+                            Partial
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- EXAM -->
+
+                <div class="form-group">
+
+                    <label>
+                        Exam Fee
+                    </label>
+
+                    <input
+                        type="number"
+                        id="examFeeInput"
+                        min="0"
+                        value="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Exam Status
+                    </label>
+
+                    <select id="examStatusInput">
+
+                        <option value="Paid">
+                            Paid
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Partial">
+                            Partial
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- HOSTEL -->
+
+                <div class="form-group">
+
+                    <label>
+                        Hostel Fee
+                    </label>
+
+                    <input
+                        type="number"
+                        id="hostelFeeInput"
+                        min="0"
+                        value="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Hostel Status
+                    </label>
+
+                    <select id="hostelStatusInput">
+
+                        <option value="Paid">
+                            Paid
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Partial">
+                            Partial
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PAID -->
+
+                <div class="form-group">
+
+                    <label>
+                        Paid Fees
+                    </label>
+
+                    <input
+                        type="number"
+                        id="paidFeesInput"
+                        min="0"
+                        value="0"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="btn-success"
+                    id="saveButton"
+                >
+                    Save Fee Details
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    onclick="closeForm()"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
+let currentFees = null;
+
+let currentRegisterNo = "";
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(message, type) {
+
+    const box =
+        document.getElementById("message");
+
+    box.textContent = message;
+
+    box.className = type;
+
+    box.style.display = "block";
+
+    setTimeout(() => {
+
+        box.style.display = "none";
+
+    }, 3500);
+}
+
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+function money(value) {
+
+    return "₹" +
+        Number(value || 0).toLocaleString("en-IN");
+
+}
+
+
+/* =====================================================
+   SEARCH FEES
+===================================================== */
+
+async function searchFees() {
+
+    const registerNo =
+        document
+            .getElementById("searchRegisterNo")
+            .value
+            .trim();
+
+    if (!registerNo) {
+
+        showMessage(
+            "Please enter Register Number.",
+            "error"
+        );
+
+        return;
+    }
+
+    currentRegisterNo = registerNo;
+
+    try {
+
+        /*
+         * Search the existing fee record.
+         * This uses the GET route already present in app.js:
+         *
+         * GET /api/student/:registerNo/fees
+         */
+
+        const response =
+            await fetch(
+                `/api/student/${encodeURIComponent(registerNo)}/fees`
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+
+            showMessage(
+                result.message ||
+                "Unable to search student fees.",
+                "error"
+            );
+
+            return;
+        }
+
+        if (!result.success) {
+
+            showMessage(
+                result.message ||
+                "Unable to search student fees.",
+                "error"
+            );
+
+            return;
+        }
+
+        /*
+         * STUDENT HAS NO FEE RECORD
+         *
+         * We still show the fee section so the admin can
+         * add the first fee record.
+         */
+        if (!result.fees) {
+
+            currentFees = null;
+
+            showEmptyFeeState();
+
+            /*
+             * Try to load the student name if the admin
+             * student endpoint exists. Failure here does
+             * not stop Add Fees.
+             */
+            try {
+
+                const studentResponse =
+                    await fetch(
+                        `/api/admin/student/${encodeURIComponent(registerNo)}`
+                    );
+
+                if (studentResponse.ok) {
+
+                    const studentResult =
+                        await studentResponse.json();
+
+                    if (
+                        studentResult.success &&
+                        studentResult.student
+                    ) {
+
+                        document
+                            .getElementById("studentName")
+                            .textContent =
+                            studentResult.student.name || "-";
+                    }
+                }
+
+            } catch (error) {
+
+                console.log(
+                    "Student name endpoint is not available."
+                );
+            }
+
+            showMessage(
+                "Student found. No fees added yet. Click + Add Fee Details.",
+                "success"
+            );
+
+            return;
+        }
+
+        /*
+         * STUDENT ALREADY HAS A FEE RECORD
+         *
+         * Now Edit / Update / Delete are enabled.
+         */
+        currentFees = result.fees;
+
+        displayFees(result.fees);
+
+        /*
+         * Get student name separately.
+         * If this endpoint is not available, the fee
+         * details still work normally.
+         */
+        try {
+
+            const studentResponse =
+                await fetch(
+                    `/api/admin/student/${encodeURIComponent(registerNo)}`
+                );
+
+            if (studentResponse.ok) {
+
+                const studentResult =
+                    await studentResponse.json();
+
+                if (
+                    studentResult.success &&
+                    studentResult.student
+                ) {
+
+                    document
+                        .getElementById("studentName")
+                        .textContent =
+                        studentResult.student.name || "-";
+                }
+            }
+
+        } catch (error) {
+
+            console.log(
+                "Student name could not be loaded."
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Search fees error:",
+            error
+        );
+
+        showMessage(
+            "Server error while searching fees.",
+            "error"
+        );
+    }
+}
+
+
+/*
+ * Show the page state when the student exists but
+ * no fee record has been added yet.
+ */
+function showEmptyFeeState() {
+
+    document
+        .getElementById("studentCard")
+        .style.display = "block";
+
+    document
+        .getElementById("summary")
+        .style.display = "grid";
+
+    document
+        .getElementById("feesSection")
+        .style.display = "block";
+
+    document
+        .getElementById("studentRegisterNo")
+        .textContent =
+        currentRegisterNo;
+
+    document
+        .getElementById("totalFees")
+        .textContent =
+        money(0);
+
+    document
+        .getElementById("paidFees")
+        .textContent =
+        money(0);
+
+    document
+        .getElementById("pendingFees")
+        .textContent =
+        money(0);
+
+    document
+        .getElementById("tuitionFee")
+        .textContent =
+        money(0);
+
+    document
+        .getElementById("examFee")
+        .textContent =
+        money(0);
+
+    document
+        .getElementById("hostelFee")
+        .textContent =
+        money(0);
+
+    setStatus(
+        "tuitionStatus",
+        "Pending"
+    );
+
+    setStatus(
+        "examStatus",
+        "Pending"
+    );
+
+    setStatus(
+        "hostelStatus",
+        "Pending"
+    );
+
+    /*
+     * Add is allowed.
+     * Edit and Delete are NOT allowed until
+     * a fee record is successfully created.
+     */
+    document
+        .getElementById("editButton")
+        .style.display = "none";
+
+    document
+        .getElementById("deleteButton")
+        .style.display = "none";
+
+    document
+        .getElementById("noFeeMessage")
+        .style.display = "block";
+}
+
+
+
+/* =====================================================
+   DISPLAY FEES
+===================================================== */
+
+function displayFees(fees) {
+
+    document
+        .getElementById("studentCard")
+        .style.display = "block";
+
+    document
+        .getElementById("summary")
+        .style.display = "grid";
+
+    document
+        .getElementById("feesSection")
+        .style.display = "block";
+
+
+    document
+        .getElementById("studentRegisterNo")
+        .textContent =
+        currentRegisterNo;
+
+
+    document
+        .getElementById("totalFees")
+        .textContent =
+        money(fees.total_fees);
+
+
+    document
+        .getElementById("paidFees")
+        .textContent =
+        money(fees.paid_fees);
+
+
+    document
+        .getElementById("pendingFees")
+        .textContent =
+        money(fees.pending_fees);
+
+
+    document
+        .getElementById("tuitionFee")
+        .textContent =
+        money(fees.tuition_fee);
+
+
+    document
+        .getElementById("examFee")
+        .textContent =
+        money(fees.exam_fee);
+
+
+    document
+        .getElementById("hostelFee")
+        .textContent =
+        money(fees.hostel_fee);
+
+
+    setStatus(
+        "tuitionStatus",
+        fees.tuition_status
+    );
+
+    setStatus(
+        "examStatus",
+        fees.exam_status
+    );
+
+    setStatus(
+        "hostelStatus",
+        fees.hostel_status
+    );
+
+    /*
+     * A fee record now exists.
+     * Enable Edit and Delete.
+     */
+    document
+        .getElementById("editButton")
+        .style.display = "inline-block";
+
+    document
+        .getElementById("deleteButton")
+        .style.display = "inline-block";
+
+    document
+        .getElementById("noFeeMessage")
+        .style.display = "none";
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function setStatus(elementId, status) {
+
+    const element =
+        document.getElementById(elementId);
+
+    const value =
+        status || "Pending";
+
+    let className =
+        "status-pending";
+
+    if (value.toLowerCase() === "paid") {
+
+        className = "status-paid";
+
+    } else if (
+        value.toLowerCase() === "partial"
+    ) {
+
+        className = "status-partial";
+    }
+
+    element.innerHTML =
+        `<span class="status ${className}">
+            ${value}
+        </span>`;
+}
+
+
+/* =====================================================
+   ADD FORM
+===================================================== */
+
+function openAddForm() {
+
+    if (currentFees && currentFees.id) {
+
+        showMessage(
+            "Fees already exist. Use Edit Fees to change the existing record.",
+            "error"
+        );
+
+        return;
+    }
+
+    if (!currentRegisterNo) {
+
+        showMessage(
+            "Search a student first.",
+            "error"
+        );
+
+        return;
+    }
+
+    currentFees = null;
+
+    document
+        .getElementById("formTitle")
+        .textContent =
+        "Add Fee Details";
+
+    document
+        .getElementById("saveButton")
+        .textContent =
+        "Save Fee Details";
+
+
+    document
+        .getElementById("feeDetailsForm")
+        .reset();
+
+
+    document
+        .getElementById("registerNo")
+        .value =
+        currentRegisterNo;
+
+
+    document
+        .getElementById("tuitionFeeInput")
+        .value = 0;
+
+    document
+        .getElementById("examFeeInput")
+        .value = 0;
+
+    document
+        .getElementById("hostelFeeInput")
+        .value = 0;
+
+    document
+        .getElementById("paidFeesInput")
+        .value = 0;
+
+
+    document
+        .getElementById("feeForm")
+        .style.display = "block";
+
+
+    window.scrollTo({
+        top:
+            document
+                .getElementById("feeForm")
+                .offsetTop,
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+   EDIT FORM
+===================================================== */
+
+function openEditForm() {
+
+    if (!currentFees) {
+
+        showMessage(
+            "Search a student first.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    document
+        .getElementById("formTitle")
+        .textContent =
+        "Edit Fee Details";
+
+
+    document
+        .getElementById("saveButton")
+        .textContent =
+        "Update Fees";
+
+
+    document
+        .getElementById("registerNo")
+        .value =
+        currentRegisterNo;
+
+
+    document
+        .getElementById("tuitionFeeInput")
+        .value =
+        currentFees.tuition_fee || 0;
+
+
+    document
+        .getElementById("tuitionStatusInput")
+        .value =
+        currentFees.tuition_status || "Pending";
+
+
+    document
+        .getElementById("examFeeInput")
+        .value =
+        currentFees.exam_fee || 0;
+
+
+    document
+        .getElementById("examStatusInput")
+        .value =
+        currentFees.exam_status || "Pending";
+
+
+    document
+        .getElementById("hostelFeeInput")
+        .value =
+        currentFees.hostel_fee || 0;
+
+
+    document
+        .getElementById("hostelStatusInput")
+        .value =
+        currentFees.hostel_status || "Pending";
+
+
+    document
+        .getElementById("paidFeesInput")
+        .value =
+        currentFees.paid_fees || 0;
+
+
+    document
+        .getElementById("feeForm")
+        .style.display = "block";
+
+
+    window.scrollTo({
+        top:
+            document
+                .getElementById("feeForm")
+                .offsetTop,
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+   CLOSE FORM
+===================================================== */
+
+function closeForm() {
+
+    document
+        .getElementById("feeForm")
+        .style.display = "none";
+}
+
+
+/* =====================================================
+   SAVE / UPDATE
+===================================================== */
+
+document
+    .getElementById("feeDetailsForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const registerNo =
+                document
+                    .getElementById("registerNo")
+                    .value
+                    .trim();
+
+
+            const tuitionFee =
+                Number(
+                    document
+                        .getElementById("tuitionFeeInput")
+                        .value
+                ) || 0;
+
+
+            const examFee =
+                Number(
+                    document
+                        .getElementById("examFeeInput")
+                        .value
+                ) || 0;
+
+
+            const hostelFee =
+                Number(
+                    document
+                        .getElementById("hostelFeeInput")
+                        .value
+                ) || 0;
+
+
+            const paidFees =
+                Number(
+                    document
+                        .getElementById("paidFeesInput")
+                        .value
+                ) || 0;
+
+
+            const total =
+                tuitionFee +
+                examFee +
+                hostelFee;
+
+
+            if (paidFees < 0) {
+
+                showMessage(
+                    "Paid fees cannot be negative.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (paidFees > total) {
+
+                showMessage(
+                    "Paid fees cannot be greater than total fees.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const data = {
+
+                registerNo,
+
+                tuitionFee,
+
+                tuitionStatus:
+                    document
+                        .getElementById(
+                            "tuitionStatusInput"
+                        )
+                        .value,
+
+                examFee,
+
+                examStatus:
+                    document
+                        .getElementById(
+                            "examStatusInput"
+                        )
+                        .value,
+
+                hostelFee,
+
+                hostelStatus:
+                    document
+                        .getElementById(
+                            "hostelStatusInput"
+                        )
+                        .value,
+
+                paidFees
+            };
+
+
+            try {
+
+                let url;
+                let method;
+
+
+                /*
+                 * EDIT
+                 */
+
+                if (
+                    currentFees &&
+                    currentFees.id
+                ) {
+
+                    url =
+                        `/api/admin/fees/${currentFees.id}`;
+
+                    method = "PUT";
+
+                }
+
+                /*
+                 * ADD
+                 */
+
+                else {
+
+                    url =
+                        "/api/admin/fees";
+
+                    method = "POST";
+                }
+
+
+                const response =
+                    await fetch(
+                        url,
+                        {
+                            method,
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(data)
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok ||
+                    !result.success
+                ) {
+
+                    showMessage(
+                        result.message ||
+                        "Unable to save fees.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                showMessage(
+                    currentFees
+                        ? "Fees updated successfully!"
+                        : "Fee details added successfully!",
+                    "success"
+                );
+
+
+                closeForm();
+
+
+                /*
+                 * Search again.
+                 */
+
+                document
+                    .getElementById(
+                        "searchRegisterNo"
+                    )
+                    .value =
+                    registerNo;
+
+
+                await searchFees();
+
+            } catch (error) {
+
+                console.error(
+                    "Save/update fees error:",
+                    error
+                );
+
+                showMessage(
+                    "Server error while saving fees.",
+                    "error"
+                );
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   DELETE
+===================================================== */
+
+async function deleteFees() {
+
+    if (!currentFees ||
+        !currentFees.id
+    ) {
+
+        showMessage(
+            "Search a student first.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete these fee details?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/admin/fees/${currentFees.id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok ||
+            !result.success
+        ) {
+
+            showMessage(
+                result.message ||
+                "Unable to delete fees.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        currentFees = null;
+
+        showEmptyFeeState();
+
+        document
+            .getElementById("feeForm")
+            .style.display = "none";
+
+        showMessage(
+            "Fees deleted successfully! You can add fees again.",
+            "success"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Delete fees error:",
+            error
+        );
+
+        showMessage(
+            "Server error while deleting fees.",
+            "error"
+        );
+    }
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+async function logout() {
+
+    try {
+
+        await fetch(
+            "/api/admin/logout",
+            {
+                method: "POST"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+    window.location.href =
+        "/admin-login.html";
+}
+
+
+/* =====================================================
+   ENTER KEY SEARCH
+===================================================== */
+
+document
+    .getElementById("searchRegisterNo")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                searchFees();
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

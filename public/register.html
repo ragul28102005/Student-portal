@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration - Erode Arts and Science College</title>
+
+    <style>
+
+        /* ==============================
+           BASIC RESET
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* ==============================
+           BODY
+        ============================== */
+
+        body {
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071a35,
+                    #123d70
+                );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px;
+        }
+
+
+        /* ==============================
+           MAIN CONTAINER
+        ============================== */
+
+        .container {
+            width: 720px;
+            max-width: 100%;
+
+            background: #ffffff;
+
+            padding: 35px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 15px 45px
+                rgba(0, 0, 0, 0.30);
+        }
+
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .college-logo {
+            display: block;
+
+            width: 85px;
+            height: 85px;
+
+            object-fit: contain;
+
+            margin: 0 auto 12px;
+        }
+
+
+        h1 {
+            text-align: center;
+
+            color: #0b2a50;
+
+            font-size: 28px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            text-align: center;
+
+            color: #666;
+
+            font-size: 15px;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* ==============================
+           FORM
+        ============================== */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            color: #222;
+
+            margin-bottom: 7px;
+        }
+
+
+        input,
+        select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #cccccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            transition: 0.2s;
+        }
+
+
+        input:focus,
+        select:focus {
+            border-color: #174f8c;
+
+            box-shadow:
+                0 0 6px
+                rgba(23, 79, 140, 0.25);
+        }
+
+
+        input::placeholder {
+            color: #999;
+        }
+
+
+        /* ==============================
+           GENDER SECTION
+        ============================== */
+
+        .gender-section {
+            display: flex;
+
+            gap: 25px;
+
+            align-items: center;
+        }
+
+
+        .gender-select {
+            flex: 1;
+        }
+
+
+        .gender-image-box {
+            width: 110px;
+            height: 110px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef4fb,
+                    #dceafb
+                );
+
+            border: 2px solid #cbdced;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0, 0, 0, 0.10);
+        }
+
+
+        .gender-image-box img {
+            width: 100px;
+            height: 100px;
+
+            object-fit: contain;
+        }
+
+
+        .gender-hint {
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 7px;
+
+            line-height: 1.4;
+        }
+
+
+        /* ==============================
+           PASSWORD HINT
+        ============================== */
+
+        .password-hint {
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 6px;
+        }
+
+
+        /* ==============================
+           REGISTER BUTTON
+        ============================== */
+
+        .register-button {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #0b2a50;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.2s;
+        }
+
+
+        .register-button:hover {
+            background: #174f8c;
+
+            transform: translateY(-1px);
+        }
+
+
+        .register-button:disabled {
+            background: #777;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* ==============================
+           MESSAGE
+        ============================== */
+
+        #message {
+            text-align: center;
+
+            margin-top: 18px;
+
+            font-weight: bold;
+
+            min-height: 22px;
+
+            line-height: 1.4;
+        }
+
+
+        /* ==============================
+           LOGIN LINK
+        ============================== */
+
+        .login-link {
+            text-align: center;
+
+            margin-top: 22px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #eeeeee;
+        }
+
+
+        .login-link a {
+            color: #0b2a50;
+
+            font-weight: bold;
+
+            text-decoration: none;
+        }
+
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* ==============================
+           REQUIRED STAR
+        ============================== */
+
+        .required {
+            color: red;
+        }
+
+
+        /* ==============================
+           RESPONSIVE DESIGN
+        ============================== */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+
+            .container {
+                padding: 25px 20px;
+            }
+
+
+            h1 {
+                font-size: 24px;
+            }
+
+
+            .gender-section {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .gender-image-box {
+                margin: 10px auto 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- ==============================
+         COLLEGE LOGO
+    ============================== -->
+
+    <img
+        src="erode-arts-science-college-logo.png"
+        alt="Erode Arts and Science College Logo"
+        class="college-logo"
+    >
+
+
+    <!-- ==============================
+         TITLE
+    ============================== -->
+
+    <h1>
+        Student Registration
+    </h1>
+
+
+    <p class="subtitle">
+        Erode Arts and Science College
+    </p>
+
+
+    <!-- ==============================
+         REGISTRATION FORM
+    ============================== -->
+
+    <form id="registrationForm">
+
+
+        <!-- STUDENT NAME -->
+
+        <div class="form-group">
+
+            <label for="name">
+                Student Name
+                <span class="required">*</span>
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter student name"
+                autocomplete="name"
+                required
+            >
+
+        </div>
+
+
+        <!-- REGISTER NUMBER -->
+
+        <div class="form-group">
+
+            <label for="registerNo">
+                Register Number
+                <span class="required">*</span>
+            </label>
+
+            <input
+                type="text"
+                id="registerNo"
+                placeholder="Enter register number"
+                autocomplete="off"
+                required
+            >
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+            <label for="email">
+                Email
+                <span class="required">*</span>
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter email address"
+                autocomplete="email"
+                required
+            >
+
+        </div>
+
+
+        <!-- PHONE -->
+
+        <div class="form-group">
+
+            <label for="phone">
+                Phone Number
+                <span class="required">*</span>
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Enter phone number"
+                autocomplete="tel"
+                required
+            >
+
+        </div>
+
+
+        <!-- DEPARTMENT -->
+
+        <div class="form-group">
+
+            <label for="department">
+                Department
+                <span class="required">*</span>
+            </label>
+
+            <select id="department" required>
+
+                <option value="">
+                    Select Department
+                </option>
+
+                <option value="Information Technology">
+                    Information Technology
+                </option>
+
+                <option value="Computer Science">
+                    Computer Science
+                </option>
+
+                <option value="Commerce">
+                    Commerce
+                </option>
+
+                <option value="Mathematics">
+                    Mathematics
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- YEAR -->
+
+        <div class="form-group">
+
+            <label for="year">
+                Year
+                <span class="required">*</span>
+            </label>
+
+            <select id="year" required>
+
+                <option value="">
+                    Select Year
+                </option>
+
+                <option value="1">
+                    First Year
+                </option>
+
+                <option value="2">
+                    Second Year
+                </option>
+
+                <option value="3">
+                    Third Year
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ==============================
+             GENDER
+        ============================== -->
+
+        <div class="form-group">
+
+            <label for="gender">
+                Gender
+                <span class="required">*</span>
+            </label>
+
+
+            <div class="gender-section">
+
+
+                <!-- GENDER SELECT -->
+
+                <div class="gender-select">
+
+                    <select id="gender" required>
+
+                        <option value="">
+                            Select Gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+
+                    <div class="gender-hint">
+
+                        Select your gender.
+                        The student animation will change automatically.
+
+                    </div>
+
+                </div>
+
+
+                <!-- GENDER IMAGE -->
+
+                <div class="gender-image-box">
+
+                    <img
+                        id="genderImage"
+                        src=""
+                        alt="Gender Animation"
+                        style="display: none;"
+                    >
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==============================
+             PASSWORD
+        ============================== -->
+
+        <div class="form-group">
+
+            <label for="password">
+                Password
+                <span class="required">*</span>
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Create password"
+                autocomplete="new-password"
+                minlength="4"
+                required
+            >
+
+            <div class="password-hint">
+                Password must contain at least 4 characters.
+            </div>
+
+        </div>
+
+
+        <!-- ==============================
+             REGISTER BUTTON
+        ============================== -->
+
+        <button
+            type="submit"
+            class="register-button"
+            id="registerButton"
+        >
+            Register Student
+        </button>
+
+
+    </form>
+
+
+    <!-- ==============================
+         MESSAGE
+    ============================== -->
+
+    <p id="message"></p>
+
+
+    <!-- ==============================
+         LOGIN LINK
+    ============================== -->
+
+    <div class="login-link">
+
+        <a href="/">
+            ← Back to Student Login
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const registrationForm =
+    document.getElementById("registrationForm");
+
+const genderSelect =
+    document.getElementById("gender");
+
+const genderImage =
+    document.getElementById("genderImage");
+
+const message =
+    document.getElementById("message");
+
+const registerButton =
+    document.getElementById("registerButton");
+
+
+/* =====================================================
+   SHOW GENDER IMAGE
+===================================================== */
+
+function updateGenderImage(gender) {
+
+    if (gender === "Male") {
+
+        genderImage.src = "male.gif";
+
+        genderImage.alt =
+            "Male Student Animation";
+
+        genderImage.style.display = "block";
+
+    }
+
+    else if (gender === "Female") {
+
+        genderImage.src = "female.gif";
+
+        genderImage.alt =
+            "Female Student Animation";
+
+        genderImage.style.display = "block";
+
+    }
+
+    else {
+
+        genderImage.src = "";
+
+        genderImage.alt =
+            "Gender Animation";
+
+        genderImage.style.display = "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   GENDER CHANGE
+===================================================== */
+
+genderSelect.addEventListener(
+    "change",
+    function () {
+
+        updateGenderImage(this.value);
+
+    }
+);
+
+
+/* =====================================================
+   SHOW MESSAGE
+===================================================== */
+
+function showMessage(text, type) {
+
+    message.textContent = text;
+
+    if (type === "success") {
+
+        message.style.color = "green";
+
+    }
+
+    else if (type === "error") {
+
+        message.style.color = "red";
+
+    }
+
+    else {
+
+        message.style.color = "#555";
+
+    }
+
+}
+
+
+/* =====================================================
+   FORM SUBMIT
+===================================================== */
+
+registrationForm.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        /* ==============================
+           GET VALUES
+        ============================== */
+
+        const name =
+            document.getElementById("name")
+                .value
+                .trim();
+
+        const registerNo =
+            document.getElementById("registerNo")
+                .value
+                .trim();
+
+        const email =
+            document.getElementById("email")
+                .value
+                .trim();
+
+        const phone =
+            document.getElementById("phone")
+                .value
+                .trim();
+
+        const department =
+            document.getElementById("department")
+                .value;
+
+        const year =
+            document.getElementById("year")
+                .value;
+
+        const gender =
+            document.getElementById("gender")
+                .value;
+
+        const password =
+            document.getElementById("password")
+                .value;
+
+
+        /* ==============================
+           BASIC VALIDATION
+        ============================== */
+
+        if (!name ||
+            !registerNo ||
+            !email ||
+            !phone ||
+            !department ||
+            !year ||
+            !gender ||
+            !password) {
+
+            showMessage(
+                "Please fill all required fields.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (password.length < 4) {
+
+            showMessage(
+                "Password must contain at least 4 characters.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /* ==============================
+           STUDENT OBJECT
+        ============================== */
+
+        const student = {
+
+            name: name,
+
+            registerNo: registerNo,
+
+            email: email,
+
+            phone: phone,
+
+            department: department,
+
+            year: year,
+
+            gender: gender,
+
+            password: password
+
+        };
+
+
+        /* ==============================
+           CLEAR MESSAGE
+        ============================== */
+
+        showMessage(
+            "Registering student...",
+            "normal"
+        );
+
+
+        /* ==============================
+           DISABLE BUTTON
+        ============================== */
+
+        registerButton.disabled = true;
+
+        registerButton.textContent =
+            "Registering...";
+
+
+        try {
+
+
+            /* ==============================
+               SEND TO NODE.JS SERVER
+            ============================== */
+
+            const response =
+                await fetch(
+                    "/api/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(student)
+                    }
+                );
+
+
+            /* ==============================
+               READ SERVER RESPONSE
+            ============================== */
+
+            const result =
+                await response.json();
+
+
+            /* ==============================
+               SUCCESS
+            ============================== */
+
+            if (
+                response.ok &&
+                result.success
+            ) {
+
+                showMessage(
+                    result.message ||
+                    "Student registered successfully.",
+                    "success"
+                );
+
+
+                /* Reset form */
+
+                registrationForm.reset();
+
+
+                /* Hide gender animation */
+
+                updateGenderImage("");
+
+
+                /* ==============================
+                   REDIRECT TO LOGIN
+                ============================== */
+
+                setTimeout(
+                    function () {
+
+                        window.location.href = "/";
+
+                    },
+                    2000
+                );
+
+
+                return;
+
+            }
+
+
+            /* ==============================
+               SERVER ERROR
+            ============================== */
+
+            showMessage(
+                result.message ||
+                "Registration failed.",
+                "error"
+            );
+
+
+        }
+
+        catch (error) {
+
+
+            console.error(
+                "Registration Error:",
+                error
+            );
+
+
+            showMessage(
+                "Unable to connect to server. Please start Node.js server.",
+                "error"
+            );
+
+        }
+
+
+        finally {
+
+            registerButton.disabled = false;
+
+            registerButton.textContent =
+                "Register Student";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INITIAL STATE
+===================================================== */
+
+updateGenderImage("");
+
+</script>
+
+
+</body>
+
+</html>

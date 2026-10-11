@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Erode Arts and Science College</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0b1220; --card:#111b2d; --text:#f3f6fc; --muted:#a8bad3;
+      --blue:#087eaf; --sidebar:#050b16; --border:#2b3a50;
+    }
+    body[data-theme="light"] {
+      --bg:#f3f6fb; --card:#ffffff; --text:#172554; --muted:#64748b;
+      --blue:#087eaf; --sidebar:#ffffff; --border:#dbe3ee;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+    body { background:var(--bg); color:var(--text); min-height:100vh; transition:background .2s ease,color .2s ease; }
+    body[data-theme="light"] .side-brand { border-bottom-color:#dbe3ee; }
+    body[data-theme="light"] .side-icon { background:#e8eef7; color:#31516e; }
+    body[data-theme="light"] .menu a { color:#334155; }
+    body[data-theme="light"] .menu a:hover, body[data-theme="light"] .menu a.active { color:#fff; }
+    body[data-theme="light"] .date-chip { background:#fff; color:#334155; }
+    body[data-theme="light"] .profile-top { background:#f8fafc; }
+    body[data-theme="light"] .form-group label { color:#334155; }
+    body[data-theme="light"] .form-group input, body[data-theme="light"] .form-group select { background:#fff; color:#172554; border-color:#cbd5e1; }
+    body[data-theme="light"] .form-group input:disabled { background:#eef2f7; color:#64748b; }
+    .navbar { background:linear-gradient(105deg,#0b3155,#155987); color:#fff; display:flex; justify-content:space-between; align-items:center; padding:12px 24px; gap:16px; }
+    .nav-brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .brand-logo { width:46px; height:46px; object-fit:contain; border-radius:50%; background:#fff; padding:2px; flex-shrink:0; }
+    .brand-title h2 { font-size:1.1rem; font-weight:600; }
+    .brand-title p { font-size:.75rem; opacity:.85; margin-top:2px; }
+    .nav-actions { display:flex; align-items:center; gap:12px; }
+    .user-name { font-size:.9rem; }
+    .theme-toggle {
+      width:46px;
+      height:46px;
+      flex:0 0 46px;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:50%;
+      background:rgba(83,153,205,.32);
+      color:#ffd166;
+      display:grid;
+      place-items:center;
+      font-size:20px;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,.12);
+      transition:transform .18s ease, background .18s ease;
+    }
+    .theme-toggle:hover { transform:translateY(-1px); background:rgba(115,180,226,.42); }
+    .theme-toggle:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+    .theme-toggle i { pointer-events:none; }
+    .logout-btn { background:#dc3545; color:#fff; border:0; padding:9px 14px; border-radius:6px; font-weight:600; cursor:pointer; }
+    .layout { display:flex; min-height:calc(100vh - 70px); }
+    .sidebar { width:240px; flex-shrink:0; background:var(--sidebar); padding:20px 12px; }
+    .side-brand { display:flex; align-items:center; gap:12px; padding:4px 8px 20px; border-bottom:1px solid #202a3a; margin-bottom:16px; }
+    .side-icon { width:44px; height:44px; display:grid; place-items:center; background:#192337; border-radius:10px; color:#a8bad3; font-size:1.1rem; }
+    .side-brand h3 { font-size:1rem; }
+    .side-brand p { font-size:.75rem; color:var(--muted); margin-top:3px; }
+    .menu { list-style:none; display:flex; flex-direction:column; gap:7px; }
+    .menu a { display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:8px; text-decoration:none; color:#c3cede; font-size:.9rem; }
+    .menu a:hover,.menu a.active { background:var(--blue); color:white; }
+    .main { flex:1; min-width:0; padding:26px; }
+    .page-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:22px; }
+    .page-heading h1 { font-size:1.55rem; }
+    .page-heading p { color:var(--muted); margin-top:5px; font-size:.9rem; }
+    .date-chip { border:1px solid var(--border); background:#101a2a; color:#e5edf8; padding:10px 13px; border-radius:8px; font-size:.82rem; white-space:nowrap; }
+    .panel { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; }
+    body[data-theme="light"] .panel { box-shadow:0 4px 15px rgba(15,23,42,.05); }
+    .panel h2 { font-size:1.2rem; margin-bottom:6px; }
+    .panel-subtitle { color:var(--muted); font-size:.9rem; margin-bottom:24px; }
+    .profile-top { display:flex; align-items:center; gap:18px; padding:16px; border:1px solid var(--border); border-radius:10px; margin-bottom:22px; background:#0d1728; }
+    .avatar { width:82px; height:82px; border-radius:50%; overflow:hidden; background:#1b2b40; flex-shrink:0; display:grid; place-items:center; }
+    .avatar img { width:100%; height:100%; object-fit:cover; }
+    .profile-top h3 { font-size:1.1rem; margin-bottom:5px; }
+    .profile-top p { color:var(--muted); font-size:.85rem; }
+    .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 18px; }
+    .form-group label { display:block; color:#dce6f5; font-size:.85rem; font-weight:600; margin-bottom:8px; }
+    .form-group input,.form-group select { width:100%; background:#0f192b; color:#f3f6fc; border:1px solid #40516b; border-radius:6px; padding:12px; font-size:.9rem; outline:none; }
+    .form-group input:focus,.form-group select:focus { border-color:#1596c7; }
+    .form-group input:disabled { color:#a8bad3; background:#182337; cursor:not-allowed; }
+    .actions { display:flex; gap:10px; margin-top:24px; flex-wrap:wrap; }
+    .btn { border:0; border-radius:7px; padding:11px 18px; cursor:pointer; font-weight:600; font-size:.9rem; }
+    .btn-primary { background:var(--blue); color:#fff; }
+    .btn-secondary { background:#253248; color:#fff; }
+    #message { margin-top:16px; font-weight:600; font-size:.9rem; }
+    .embedded-page-container { display:none; width:100%; min-width:0; }
+    .embedded-page-frame { display:block; width:100%; height:calc(100vh - 180px); min-height:560px; border:1px solid var(--border); border-radius:12px; background:#fff; }
+    .embedded-page-heading { margin-bottom:16px; }
+    @media(max-width:760px) {
+      .navbar { padding:10px 14px; } .brand-logo { width:40px;height:40px; }
+      .brand-title h2 { font-size:.9rem; } .user-name { display:none; } .theme-toggle { width:40px; height:40px; flex-basis:40px; font-size:18px; }
+      .layout { flex-direction:column; } .sidebar { width:100%; padding:10px; }
+      .side-brand { display:none; } .menu { flex-direction:row; overflow-x:auto; gap:5px; }
+      .menu li { flex:0 0 auto; } .menu a { padding:10px 12px; white-space:nowrap; font-size:.82rem; }
+      .main { padding:16px; } .form-grid { grid-template-columns:1fr; }
+      .page-heading { align-items:flex-start; flex-direction:column; } .date-chip { white-space:normal; }
+      .panel { padding:18px; }
+      .embedded-page-frame { height:calc(100vh - 210px); min-height:480px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img class="brand-logo" src="erode-arts-science-college-logo.png" alt="Erode Arts and Science College logo">
+      <div class="brand-title"><h2>Erode Arts and Science College</h2><p>Student Portal</p></div>
+    </div>
+    <div class="nav-actions">
+      <span class="user-name" id="navUserName">Student</span>
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        type="button"
+        onclick="toggleTheme()"
+        aria-label="Switch to light mode"
+        title="Switch theme"
+      ><i class="fa-solid fa-sun" id="themeToggleIcon" aria-hidden="true"></i></button>
+      <button class="logout-btn" onclick="logoutStudent()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <div class="side-icon"><i class="fa-solid fa-user-graduate"></i></div>
+        <div><h3>Student Panel</h3><p>My Academic Portal</p></div>
+      </div>
+      <ul class="menu">
+        <li><a href="dashboard.html" id="dashboardMenuLink" onclick="return showPortalPage(event, 'dashboard.html', 'dashboardMenuLink')"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a class="active" href="#profile" id="profileMenuLink" onclick="return showProfilePage(event)"><i class="fa-solid fa-user"></i> My Profile</a></li>
+        <li><a href="#marks" id="marksMenuLink" onclick="return showPortalPage(event, 'marks.html', 'marksMenuLink')"><i class="fa-solid fa-chart-column"></i> Marks</a></li>
+        <li><a href="#fees" id="feesMenuLink" onclick="return showPortalPage(event, 'fees.html', 'feesMenuLink')"><i class="fa-solid fa-indian-rupee-sign"></i> Fees</a></li>
+        <li><a href="#attendance" id="attendanceMenuLink" onclick="return showPortalPage(event, 'attendance.html', 'attendanceMenuLink')"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div id="profileContent">
+      <header class="page-heading">
+        <div><h1>My Profile</h1><p>View and update your personal information</p></div>
+        <div class="date-chip"><i class="fa-regular fa-calendar"></i> <span id="todayDate"></span></div>
+      </header>
+
+      <section class="panel">
+        <h2>Student Information</h2>
+        <p class="panel-subtitle">Your registered details are shown below. Update the editable fields and save your changes.</p>
+
+        <div class="profile-top">
+          <div class="avatar"><img id="genderImage" src="male.gif" alt="Student avatar"></div>
+          <div><h3 id="profileName">Loading profile...</h3><p>Register Number: <span id="profileRegNo">—</span></p><p id="genderText">Student</p></div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group"><label for="name">Student Name</label><input id="name" type="text" autocomplete="name" required></div>
+          <div class="form-group"><label for="registerNo">Register Number</label><input id="registerNo" type="text" disabled></div>
+          <div class="form-group"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required></div>
+          <div class="form-group"><label for="phone">Phone Number</label><input id="phone" type="tel" autocomplete="tel" required></div>
+          <div class="form-group"><label for="gender">Gender</label><select id="gender"><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Not Specified">Not Specified</option></select></div>
+          <div class="form-group"><label for="department">Department</label><input id="department" type="text" disabled></div>
+          <div class="form-group"><label for="year">Year</label><input id="year" type="text" disabled></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="saveButton" onclick="updateProfile()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+          <button class="btn btn-secondary" onclick="loadProfile()"><i class="fa-solid fa-rotate"></i> Reload</button>
+        </div>
+        <p id="message" role="status"></p>
+      </section>
+      </div>
+
+      <section id="embeddedPageContainer" class="embedded-page-container" aria-live="polite">
+        <header class="page-heading embedded-page-heading">
+          <div>
+            <h1 id="embeddedPageTitle">Student Portal</h1>
+            <p id="embeddedPageSubtitle">View your academic information</p>
+          </div>
+        </header>
+        <iframe
+          id="embeddedPageFrame"
+          class="embedded-page-frame"
+          title="Student Portal Content"
+          src="about:blank"
+        ></iframe>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    let loggedStudent = null;
+    let registerNo = "";
+
+    function getStudentFromStorage() {
+      try {
+        return JSON.parse(sessionStorage.getItem("student") || localStorage.getItem("student") || "null");
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function requireStudent() {
+      loggedStudent = getStudentFromStorage();
+      if (!loggedStudent || !loggedStudent.registerNo) {
+        alert("Please log in to view your profile.");
+        window.location.href = "/";
+        return false;
+      }
+      registerNo = loggedStudent.registerNo;
+      document.getElementById("navUserName").textContent = loggedStudent.name || "Student";
+      return true;
+    }
+
+    function updateGenderImage(gender) {
+      const value = String(gender || "").trim().toLowerCase();
+      const image = document.getElementById("genderImage");
+      const text = document.getElementById("genderText");
+      if (value === "female") {
+        image.src = "female.gif";
+        text.textContent = "Female Student";
+      } else {
+        image.src = "male.gif";
+        text.textContent = value === "male" ? "Male Student" : (gender || "Not Specified");
+      }
+      image.onerror = () => { image.onerror = null; image.style.display = "none"; };
+    }
+
+    async function loadProfile() {
+      if (!registerNo && !requireStudent()) return;
+      const message = document.getElementById("message");
+      message.textContent = "Loading profile...";
+      message.style.color = "#a8bad3";
+      try {
+        const response = await fetch(`/api/student/${encodeURIComponent(registerNo)}`);
+        const result = await response.json();
+        if (!response.ok || !result.success || !result.student) {
+          throw new Error(result.message || "Could not load student profile.");
+        }
+        const student = result.student;
+        document.getElementById("name").value = student.name || "";
+        document.getElementById("registerNo").value = student.registerNo || registerNo;
+        document.getElementById("email").value = student.email || "";
+        document.getElementById("phone").value = student.phone || "";
+        document.getElementById("gender").value = student.gender || "Not Specified";
+        document.getElementById("department").value = student.department || "";
+        document.getElementById("year").value = student.year || "";
+        document.getElementById("profileName").textContent = student.name || "Student";
+        document.getElementById("profileRegNo").textContent = student.registerNo || registerNo;
+        document.getElementById("navUserName").textContent = student.name || "Student";
+        updateGenderImage(student.gender);
+        message.textContent = "";
+      } catch (error) {
+        console.error("Profile load error:", error);
+        message.style.color = "#ff8d96";
+        message.textContent = error.message || "Unable to connect to server.";
+      }
+    }
+
+    async function updateProfile() {
+      if (!registerNo && !requireStudent()) return;
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const gender = document.getElementById("gender").value;
+      const message = document.getElementById("message");
+      const saveButton = document.getElementById("saveButton");
+
+      if (!name || !email || !phone) {
+        message.style.color = "#ff8d96";
+        message.textContent = "Please fill in name, email, and phone number.";
+        return;
+      }
+
+      saveButton.disabled = true;
+      saveButton.textContent = "Saving...";
+      try {
+        const response = await fetch(`/api/student/${encodeURIComponent(registerNo)}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, phone, gender })
+        });
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Profile update failed.");
+        }
+        loggedStudent = { ...loggedStudent, name, email, phone, gender };
+        sessionStorage.setItem("student", JSON.stringify(loggedStudent));
+        if (localStorage.getItem("student")) localStorage.setItem("student", JSON.stringify(loggedStudent));
+        document.getElementById("profileName").textContent = name;
+        document.getElementById("navUserName").textContent = name;
+        document.getElementById("profileRegNo").textContent = registerNo;
+        updateGenderImage(gender);
+        message.style.color = "#65d6a1";
+        message.textContent = result.message || "Profile updated successfully.";
+      } catch (error) {
+        console.error("Profile update error:", error);
+        message.style.color = "#ff8d96";
+        message.textContent = error.message || "Unable to connect to server.";
+      } finally {
+        saveButton.disabled = false;
+        saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Changes';
+      }
+    }
+
+    /* =====================================================
+       SAME-PAGE STUDENT PORTAL NAVIGATION
+       Loads Dashboard, Marks, Fees and Attendance inside
+       the right-hand panel without leaving this page.
+    ===================================================== */
+
+    let currentEmbeddedPage = "";
+
+    function setActiveMenu(menuId) {
+      document.querySelectorAll(".menu a").forEach(function (link) {
+        link.classList.remove("active");
+        link.removeAttribute("aria-current");
+      });
+
+      const activeLink = document.getElementById(menuId);
+      if (activeLink) {
+        activeLink.classList.add("active");
+        activeLink.setAttribute("aria-current", "page");
+      }
+    }
+
+    function showProfilePage(event) {
+      if (event) event.preventDefault();
+      setActiveMenu("profileMenuLink");
+      document.getElementById("embeddedPageContainer").style.display = "none";
+      document.getElementById("profileContent").style.display = "block";
+      loadProfile();
+      return false;
+    }
+
+    function showPortalPage(event, pageName, menuId) {
+      if (event) event.preventDefault();
+      setActiveMenu(menuId);
+      document.getElementById("profileContent").style.display = "none";
+      document.getElementById("embeddedPageContainer").style.display = "block";
+
+      const titles = {
+        "dashboard.html": ["Student Dashboard", "Welcome to your student portal"],
+        "marks.html": ["My Marks", "View your semester-wise marks and results"],
+        "fees.html": ["My Fees", "View your fee details and payment status"],
+        "attendance.html": ["Attendance", "View your attendance details"]
+      };
+
+      const pageInfo = titles[pageName] || ["Student Portal", "View your academic information"];
+      document.getElementById("embeddedPageTitle").textContent = pageInfo[0];
+      document.getElementById("embeddedPageSubtitle").textContent = pageInfo[1];
+
+      const frame = document.getElementById("embeddedPageFrame");
+      const target = new URL(pageName, window.location.href).href;
+      if (frame.src !== target || currentEmbeddedPage !== pageName) {
+        currentEmbeddedPage = pageName;
+        frame.src = target;
+      } else {
+        prepareEmbeddedPage();
+      }
+      return false;
+    }
+
+    function prepareEmbeddedPage() {
+      const frame = document.getElementById("embeddedPageFrame");
+
+      try {
+        const doc = frame.contentDocument;
+        if (!doc || !doc.documentElement || !doc.head || !doc.body) return;
+
+        const theme = document.body.dataset.theme || "dark";
+        const isLight = theme === "light";
+
+        const background = isLight ? "#f3f6fb" : "#0b1220";
+        const card = isLight ? "#ffffff" : "#111b2d";
+        const text = isLight ? "#172554" : "#f3f6fc";
+        const muted = isLight ? "#64748b" : "#a8bad3";
+        const border = isLight ? "#dbe3ee" : "#2b3a50";
+        const inputBackground = isLight ? "#ffffff" : "#0f192b";
+        const inputBorder = isLight ? "#cbd5e1" : "#40516b";
+        const softCard = isLight ? "#f8fafc" : "#0d1728";
+        const hover = isLight ? "#eef4fb" : "#172033";
+
+        // Update CSS variables used by attendance.html and other embedded pages.
+        const root = doc.documentElement;
+        root.style.setProperty("--bg", background);
+        root.style.setProperty("--card", card);
+        root.style.setProperty("--text", text);
+        root.style.setProperty("--muted", muted);
+        root.style.setProperty("--border", border);
+        root.style.setProperty("--blue", isLight ? "#087eaf" : "#0ea5e9");
+        root.style.setProperty("color-scheme", isLight ? "light" : "dark");
+
+        let injected = doc.getElementById("samePortalShellFix");
+        if (!injected) {
+          injected = doc.createElement("style");
+          injected.id = "samePortalShellFix";
+          doc.head.appendChild(injected);
+        }
+
+        injected.textContent = `
+          :root {
+            --bg:${background} !important;
+            --card:${card} !important;
+            --text:${text} !important;
+            --muted:${muted} !important;
+            --border:${border} !important;
+            --blue:${isLight ? "#087eaf" : "#0ea5e9"} !important;
+            color-scheme:${isLight ? "light" : "dark"} !important;
+          }
+
+          html, body {
+            margin:0 !important;
+            min-height:0 !important;
+            background:${background} !important;
+            color:${text} !important;
+          }
+
+          body { padding:18px !important; }
+          nav.navbar, .top-header, .sidebar, aside.sidebar { display:none !important; }
+
+          .layout, .dashboard-container, .dashboard-layout {
+            display:block !important;
+            width:100% !important;
+            min-height:0 !important;
+            height:auto !important;
+            margin:0 !important;
+            padding:0 !important;
+            background:transparent !important;
+          }
+
+          .main, .main-content {
+            display:block !important;
+            position:static !important;
+            width:100% !important;
+            max-width:none !important;
+            min-height:0 !important;
+            height:auto !important;
+            margin:0 !important;
+            padding:0 !important;
+            background:transparent !important;
+            color:${text} !important;
+          }
+
+          .navbar + .layout { margin-top:0 !important; }
+
+          /* Correct page title/header visibility in both themes. */
+          header.page-header, .page-header, .page-heading {
+            background:${card} !important;
+            color:${text} !important;
+            border-color:${border} !important;
+          }
+          .page-header h1, .page-heading h1,
+          h1, h2, h3, h4, h5,
+          .card-title, .summary-number,
+          .student-info-box strong, .student-box strong,
+          .student-info-grid strong, .info-details span,
+          .info-details label, .info-item strong,
+          .student-info strong, .summary-card strong,
+          .summary-item strong, .marks-info-box strong,
+          .marks-summary-box strong, .student-name,
+          .profile-top h3, .calendar-header h2 {
+            color:${text} !important;
+          }
+
+          .page-header p, .page-heading p, p, small, label,
+          .summary-small, .panel-subtitle,
+          .student-info-box span, .student-box span,
+          .info-item span, .summary-card span,
+          .summary-item span, .marks-info-box span,
+          .marks-summary-box span, .legend-item {
+            color:${muted} !important;
+          }
+
+          .header-icon, .summary-icon {
+            background:${isLight ? "#e0f2fe" : "#1b3150"} !important;
+            color:${isLight ? "#0369a1" : "#93c5fd"} !important;
+          }
+
+          .student-info, .student-info-box, .student-box,
+          .student-info-grid > div, .info-item, .info-box,
+          .marks-card, .summary-card, .summary-item, .summary-result,
+          .attendance-card, .calendar-card, .panel,
+          .profile-card, .content-card, .info-card,
+          .gender-card, .quick-card, .quick-actions-card,
+          .activity-card, .fees-card, .fee-card, .card,
+          .card-box, .data-card, .marks-summary-box,
+          .marks-info-box, .profile-top {
+            background:${card} !important;
+            border-color:${border} !important;
+            color:${text} !important;
+          }
+
+          .student-box, .info-item, .info-box, .profile-top,
+          .info-card, .student-info-grid > div {
+            background:${softCard} !important;
+          }
+
+          /* Ensure semester summary tiles follow light/dark mode. */
+          .summary-item {
+            background:${isLight ? "#ffffff" : "#0d1728"} !important;
+            border-color:${border} !important;
+            color:${text} !important;
+          }
+          .summary-item span {
+            color:${muted} !important;
+          }
+          .summary-item strong {
+            color:${text} !important;
+          }
+
+          .embedded-page-container, .main, .main-content,
+          .table-wrapper, .table-container, .table-wrap {
+            color:${text} !important;
+            border-color:${border} !important;
+          }
+
+          table { color:${text} !important; }
+          th {
+            background:${isLight ? "#e8eef7" : "#17314f"} !important;
+            color:${isLight ? "#172554" : "#f3f6fc"} !important;
+            border-color:${border} !important;
+          }
+          td {
+            color:${text} !important;
+            border-color:${border} !important;
+          }
+          tbody tr:hover { background:${hover} !important; }
+
+          input, select, textarea {
+            background:${inputBackground} !important;
+            color:${text} !important;
+            border-color:${inputBorder} !important;
+          }
+          input:disabled { color:${muted} !important; }
+          button:not(.logout-btn) { color:inherit; }
+          .empty-state, .empty-box, .loading-box { color:${muted} !important; }
+
+          .note, .attendance-note {
+            background:${isLight ? "#eff6ff" : "#132643"} !important;
+            border-color:${isLight ? "#bfdbfe" : "#2b4d79"} !important;
+            color:${isLight ? "#1d4ed8" : "#b6d5ff"} !important;
+          }
+
+          .date-chip {
+            background:${card} !important;
+            color:${text} !important;
+            border-color:${border} !important;
+          }
+
+          /* Keep meaning/status badges readable in either theme. */
+          .status.present, .badge-good, .status-good { color:#ffffff !important; }
+          .status.absent, .badge-low, .status-low { color:#ffffff !important; }
+          .status.late, .badge-average, .status-average { color:#ffffff !important; }
+          .good-badge { color:#166534 !important; }
+          .average-badge { color:#92400e !important; }
+          .danger-badge { color:#991b1b !important; }
+        `;
+
+        if (currentEmbeddedPage === "dashboard.html") {
+          let shellFix = doc.getElementById("samePortalDashboardHeaderFix");
+          if (!shellFix) {
+            shellFix = doc.createElement("style");
+            shellFix.id = "samePortalDashboardHeaderFix";
+            doc.head.appendChild(shellFix);
+          }
+          shellFix.textContent = `
+            .header { display:none !important; }
+            .main { padding-top:0 !important; }
+          `;
+        }
+
+        // Fees already has a page title in the outer Student Portal.
+        // Hide the duplicate inner toolbar containing "My Fees" and
+        // "Back to Dashboard" so it cannot turn dark-on-dark in light mode.
+        if (currentEmbeddedPage === "fees.html") {
+          const backControl = Array.from(
+            doc.querySelectorAll("a, button")
+          ).find(element =>
+            /back\s+to\s+dashboard/i.test(
+              (element.innerText || element.textContent || "").trim()
+            )
+          );
+
+          let toolbar = null;
+          if (backControl) {
+            let ancestor = backControl.parentElement;
+            while (ancestor && ancestor !== doc.body) {
+              const textContent = (ancestor.innerText || "").toLowerCase();
+              const height = ancestor.getBoundingClientRect().height;
+
+              if (
+                textContent.includes("my fees") &&
+                textContent.includes("back to dashboard") &&
+                height > 0 && height < 180
+              ) {
+                toolbar = ancestor;
+              }
+              ancestor = ancestor.parentElement;
+            }
+
+            if (toolbar) {
+              toolbar.style.setProperty("display", "none", "important");
+            } else {
+              // Fallback for fee pages whose toolbar uses different markup.
+              const headings = Array.from(
+                doc.querySelectorAll("header, .header, .page-header, .page-heading, .topbar, .top-bar")
+              );
+              const duplicateHeader = headings.find(element => {
+                const textContent = (element.innerText || "").toLowerCase();
+                return textContent.includes("my fees") && textContent.includes("back to dashboard");
+              });
+              if (duplicateHeader) {
+                duplicateHeader.style.setProperty("display", "none", "important");
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.warn("Could not adjust embedded page shell/theme:", error);
+      }
+    }
+
+    document.getElementById("embeddedPageFrame").addEventListener("load", prepareEmbeddedPage);
+
+    /* =========================================
+       LIGHT / DARK THEME TOGGLE
+       Shared by Dashboard, Profile, Marks, Fees and Attendance.
+    ========================================= */
+
+    function applyTheme(theme) {
+      const selectedTheme = theme === "light" ? "light" : "dark";
+      document.body.dataset.theme = selectedTheme;
+      localStorage.setItem("studentPortalTheme", selectedTheme);
+
+      const icon = document.getElementById("themeToggleIcon");
+      const button = document.getElementById("themeToggle");
+
+      if (selectedTheme === "dark") {
+        // Show the sun icon, matching the requested header toggle.
+        icon.className = "fa-solid fa-sun";
+        button.setAttribute("aria-label", "Switch to light mode");
+        button.title = "Switch to light mode";
+      } else {
+        icon.className = "fa-solid fa-moon";
+        button.setAttribute("aria-label", "Switch to dark mode");
+        button.title = "Switch to dark mode";
+      }
+
+      prepareEmbeddedPage();
+    }
+
+    function toggleTheme() {
+      const current = document.body.dataset.theme || "dark";
+      applyTheme(current === "dark" ? "light" : "dark");
+    }
+
+    // Reapply the selected theme when a page inside the dashboard iframe loads.
+    window.addEventListener("storage", function (event) {
+      if (event.key === "studentPortalTheme") {
+        applyTheme(event.newValue || "dark");
+      }
+    });
+
+    function logoutStudent() {
+      sessionStorage.removeItem("student");
+      localStorage.removeItem("student");
+      window.location.href = "/";
+    }
+
+    applyTheme(localStorage.getItem("studentPortalTheme") || "dark");
+
+    document.getElementById("todayDate").textContent = new Date().toLocaleDateString("en-IN", {
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
+    });
+
+    requireStudent();
+    loadProfile();
+  </script>
+</body>
+</html>

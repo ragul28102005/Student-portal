@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Admin Dashboard - Erode Arts and Science College Student Portal">
+
+    <title>Admin Dashboard - Erode Arts and Science College</title>
+
+    <link rel="stylesheet" href="./admin-dashboard.css">
+
+    <style>
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .theme-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle-button {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            min-height: 46px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 21px;
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            transition: background 0.25s ease,
+                        transform 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+        }
+
+        .theme-toggle-button:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.30);
+        }
+
+        .theme-toggle-button:active {
+            transform: scale(0.94);
+        }
+
+        .theme-control-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .theme-option,
+        .theme-indicator,
+        .admin-user,
+        .sidebar-footer {
+            display: none !important;
+        }
+
+        .theme-toggle-button.dark-active {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .theme-toggle-button.dark-active:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        /* Management form styles */
+        .management-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .management-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .management-form input,
+        .management-form select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        .management-form .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .management-form button,
+        .record-action {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .management-form button {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .record-action {
+            margin: 3px;
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .record-action.delete {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .management-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .management-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .management-table th,
+        .management-table td {
+            padding: 11px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        .management-table th {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .management-message {
+            margin-top: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .header-right {
+                gap: 8px;
+            }
+
+            .theme-toggle-button {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                min-height: 40px;
+                font-size: 18px;
+            }
+
+            .management-form {
+                grid-template-columns: 1fr;
+            }
+
+            .management-form .full-width {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- College header -->
+    <header class="top-header">
+
+        <div class="college-info">
+            <img
+                src="./erode-arts-science-college-logo.png"
+                alt="Erode Arts and Science College Logo"
+                class="college-logo"
+            >
+
+            <div class="college-text">
+                <h1>Erode Arts and Science College</h1>
+                <p>Student Portal</p>
+            </div>
+        </div>
+
+        <div class="header-right">
+
+            <div class="theme-control" title="Change dashboard theme">
+                <button
+                    type="button"
+                    id="themeToggle"
+                    class="theme-toggle-button"
+                    aria-label="Switch to dark mode"
+                    aria-pressed="false"
+                >
+                    <span class="theme-control-icon" id="themeIcon">
+                        ☀️
+                    </span>
+                </button>
+            </div>
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-button"
+            >
+                🚪 Logout
+            </button>
+
+        </div>
+    </header>
+
+    <!-- Dashboard layout -->
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+                <div class="admin-icon">⚙️</div>
+
+                <div>
+                    <h2>Admin Panel</h2>
+                    <p>Management</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu" aria-label="Admin Navigation">
+
+                <button
+                    type="button"
+                    class="menu-item active"
+                    data-section="dashboard"
+                    onclick="showSection('dashboard')"
+                >
+                    <span class="menu-icon">🏠</span>
+                    <span>Dashboard</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    data-section="addStudent"
+                    onclick="showSection('addStudent')"
+                >
+                    <span class="menu-icon">👨‍🎓</span>
+                    <span>Add Student</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    data-section="studentProfile"
+                    onclick="showSection('studentProfile')"
+                >
+                    <span class="menu-icon">👤</span>
+                    <span>Student Profile</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    data-section="marks"
+                    onclick="showSection('marks')"
+                >
+                    <span class="menu-icon">📊</span>
+                    <span>Manage Marks</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    data-section="fees"
+                    onclick="showSection('fees')"
+                >
+                    <span class="menu-icon">💰</span>
+                    <span>Manage Fees</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    data-section="attendance"
+                    onclick="showSection('attendance')"
+                >
+                    <span class="menu-icon">📅</span>
+                    <span>Attendance</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    data-section="students"
+                    onclick="showSection('students')"
+                >
+                    <span class="menu-icon">👥</span>
+                    <span>View Students</span>
+                </button>
+
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <div class="page-header">
+
+                <div>
+                    <h2 id="pageTitle">Dashboard</h2>
+
+                    <p id="pageSubtitle">
+                        Welcome to the Student Portal Administration
+                    </p>
+                </div>
+
+                <div class="page-date">
+                    <span class="date-icon">📅</span>
+                    <span id="currentDate">Today</span>
+                </div>
+
+            </div>
+
+            <!-- JavaScript loads the selected section here -->
+            <section
+                id="contentSection"
+                class="content-section"
+                aria-live="polite"
+            >
+                <div class="loading-message">
+                    <div class="loading-spinner"></div>
+                    <p>Loading Admin Dashboard...</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Logout confirmation -->
+    <div id="logoutModal" class="logout-modal" hidden>
+
+        <div
+            class="logout-modal-box"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="logoutTitle"
+        >
+
+            <div class="logout-modal-icon">🚪</div>
+
+            <h3 id="logoutTitle">Logout</h3>
+
+            <p>Are you sure you want to logout?</p>
+
+            <div class="logout-modal-buttons">
+
+                <button
+                    type="button"
+                    id="cancelLogout"
+                    class="cancel-logout"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    id="confirmLogout"
+                    class="confirm-logout"
+                >
+                    Logout
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Existing dashboard JavaScript -->
+    <script src="./admin-dashboard.js"></script>
+
+    <!-- Theme control -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const themeButton =
+                document.getElementById("themeToggle");
+
+            const themeIcon =
+                document.getElementById("themeIcon");
+
+            if (!themeButton) return;
+
+            function setTheme(theme) {
+
+                const isDark = theme === "dark";
+
+                document.body.classList.toggle(
+                    "dark-mode",
+                    isDark
+                );
+
+                themeButton.setAttribute(
+                    "aria-pressed",
+                    String(isDark)
+                );
+
+                themeButton.setAttribute(
+                    "aria-label",
+                    isDark
+                        ? "Switch to light mode"
+                        : "Switch to dark mode"
+                );
+
+                themeButton.classList.toggle(
+                    "dark-active",
+                    isDark
+                );
+
+                if (themeIcon) {
+                    themeIcon.textContent =
+                        isDark ? "🌙" : "☀️";
+                }
+
+                localStorage.setItem(
+                    "adminDashboardTheme",
+                    theme
+                );
+            }
+
+            setTheme(
+                localStorage.getItem("adminDashboardTheme")
+                    || "light"
+            );
+
+            themeButton.addEventListener("click", function () {
+
+                const isDark =
+                    document.body.classList.contains("dark-mode");
+
+                setTheme(isDark ? "light" : "dark");
+            });
+        });
+
+        // Display the current date
+        function updateCurrentDate() {
+
+            const dateElement =
+                document.getElementById("currentDate");
+
+            if (!dateElement) return;
+
+            dateElement.textContent =
+                new Date().toLocaleDateString("en-IN", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                });
+        }
+
+        updateCurrentDate();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,938 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance - Student Portal</title>
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111b2d;
+      --text: #f3f6fc;
+      --muted: #a8bad3;
+      --border: #2b3a50;
+      --blue: #087eaf;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 18px;
+    }
+
+    .attendance-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px;
+      margin-bottom: 18px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .header-icon {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #173450;
+      color: #60a5fa;
+      font-size: 27px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .student-info,
+    .attendance-card,
+    .calendar-card,
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .student-info {
+      margin-bottom: 18px;
+    }
+
+    .student-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .student-box {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0d1728;
+      min-width: 0;
+    }
+
+    .student-box span,
+    .summary-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .student-box strong {
+      color: var(--text);
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
+      min-width: 0;
+    }
+
+    .summary-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      margin-bottom: 14px;
+      background: #1b3150;
+      color: #93c5fd;
+      font-size: 18px;
+    }
+
+    .summary-number {
+      font-size: 27px;
+      font-weight: 700;
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .card-title i {
+      color: #60a5fa;
+      font-size: 20px;
+    }
+
+    .card-title h2,
+    .calendar-header h2 {
+      font-size: 19px;
+      color: var(--text);
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 680px;
+      border-collapse: collapse;
+      color: var(--text);
+    }
+
+    th {
+      background: #17314f;
+      color: #f3f6fc;
+      padding: 12px 10px;
+      font-size: 12px;
+      text-align: center;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      color: var(--text);
+      padding: 13px 10px;
+      font-size: 13px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:hover {
+      background: #17243a;
+    }
+
+    td.subject-name {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .present {
+      background: #14532d;
+      color: #bbf7d0;
+    }
+
+    .absent {
+      background: #7f1d1d;
+      color: #fecaca;
+    }
+
+    .late {
+      background: #78350f;
+      color: #fde68a;
+    }
+
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .calendar-header h2 {
+      font-size: 17px;
+    }
+
+    .calendar-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .calendar-buttons button {
+      height: 32px;
+      width: 32px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .calendar-buttons button:hover {
+      background: var(--blue);
+    }
+
+    .calendar-week,
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 5px;
+    }
+
+    .calendar-week {
+      margin-bottom: 8px;
+    }
+
+    .calendar-week div {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .calendar-day {
+      min-width: 0;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .calendar-day.muted {
+      color: #64748b;
+    }
+
+    .calendar-day.present {
+      background: #166534;
+      color: #dcfce7;
+    }
+
+    .calendar-day.absent {
+      background: #991b1b;
+      color: #fee2e2;
+    }
+
+    .calendar-day.late {
+      background: #92400e;
+      color: #fef3c7;
+    }
+
+    .calendar-day.today {
+      outline: 2px solid #60a5fa;
+      outline-offset: 1px;
+    }
+
+    .calendar-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .legend-present { background: #22c55e; }
+    .legend-absent { background: #ef4444; }
+    .legend-late { background: #f59e0b; }
+
+    .message {
+      padding: 14px;
+      background: #111b2d;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .error-message {
+      background: #3b1219;
+      color: #fecaca;
+      border-color: #7f1d1d;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px;
+      background: #132643;
+      border: 1px solid #2b4d79;
+      border-radius: 8px;
+      color: #b6d5ff;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1050px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .student-grid,
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .page-header {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+    }
+
+    @media (max-width: 450px) {
+      body {
+        padding: 10px;
+      }
+
+      .student-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .student-info,
+      .attendance-card,
+      .calendar-card,
+      .summary-card {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="attendance-container">
+
+  <header class="page-header">
+    <div class="header-icon">
+      <i class="fa-solid fa-calendar-check"></i>
+    </div>
+
+    <div>
+      <h1>Attendance</h1>
+      <p>View your daily and subject-wise attendance records.</p>
+    </div>
+  </header>
+
+  <div id="pageMessage" class="message" role="status">
+    Loading your attendance...
+  </div>
+
+  <section class="student-info">
+    <div class="student-grid">
+
+      <div class="student-box">
+        <span>Student Name</span>
+        <strong id="studentName">Loading...</strong>
+      </div>
+
+      <div class="student-box">
+        <span>Register Number</span>
+        <strong id="studentRegisterNo">Loading...</strong>
+      </div>
+
+      <div class="student-box">
+        <span>Department</span>
+        <strong id="studentDepartment">Loading...</strong>
+      </div>
+
+      <div class="student-box">
+        <span>Year</span>
+        <strong id="studentYear">Loading...</strong>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="summary-grid">
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        <i class="fa-solid fa-calendar-days"></i>
+      </div>
+      <span>Total Classes Recorded</span>
+      <div class="summary-number" id="totalClasses">0</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <span>Present</span>
+      <div class="summary-number" id="presentClasses">0</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <span>Absent</span>
+      <div class="summary-number" id="absentClasses">0</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        <i class="fa-solid fa-percent"></i>
+      </div>
+      <span>Attendance Percentage</span>
+      <div class="summary-number" id="attendancePercentage">0%</div>
+    </div>
+
+  </section>
+
+  <div class="main-grid">
+
+    <section class="attendance-card">
+
+      <div class="card-title">
+        <i class="fa-solid fa-chart-column"></i>
+        <h2>Subject-wise Attendance</h2>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Subject</th>
+              <th>Total Classes</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Late</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+
+          <tbody id="attendanceTableBody">
+            <tr>
+              <td colspan="7">Loading attendance records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <i class="fa-solid fa-circle-info"></i>
+        This report displays the daily records saved by the college administrator.
+        Contact your administration if a record is missing or incorrect.
+      </div>
+
+    </section>
+
+    <section class="calendar-card">
+
+      <div class="calendar-header">
+
+        <h2 id="calendarMonth">Attendance Calendar</h2>
+
+        <div class="calendar-buttons">
+          <button type="button" id="previousMonth" aria-label="Previous month">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <button type="button" id="nextMonth" aria-label="Next month">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="calendar-week">
+        <div>Sun</div><div>Mon</div><div>Tue</div>
+        <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+
+      <div class="calendar-days" id="calendarDays"></div>
+
+      <div class="calendar-legend">
+
+        <div class="legend-item">
+          <span class="legend-dot legend-present"></span>
+          Present
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot legend-absent"></span>
+          Absent
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot legend-late"></span>
+          Late
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+let student = null;
+let attendanceRecords = [];
+let calendarDate = new Date();
+
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+function showMessage(message, isError = false) {
+  const element = document.getElementById("pageMessage");
+
+  element.textContent = message;
+  element.className = isError
+    ? "message error-message"
+    : "message";
+
+  element.style.display = message ? "block" : "none";
+}
+
+
+function getStoredStudent() {
+  try {
+    return JSON.parse(
+      sessionStorage.getItem("student") ||
+      localStorage.getItem("student") ||
+      "null"
+    );
+  } catch (error) {
+    return null;
+  }
+}
+
+
+/* Load the student's profile from the server. */
+async function loadStudentProfile(registerNo) {
+  const response = await fetch(
+    "/api/student/" + encodeURIComponent(registerNo),
+    { cache: "no-store" }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok || !data.success || !data.student) {
+    throw new Error(
+      data.message || "Unable to load student information."
+    );
+  }
+
+  student = data.student;
+
+  document.getElementById("studentName").textContent =
+    student.name || "-";
+
+  document.getElementById("studentRegisterNo").textContent =
+    student.registerNo || registerNo;
+
+  document.getElementById("studentDepartment").textContent =
+    student.department || "-";
+
+  document.getElementById("studentYear").textContent =
+    student.year || "-";
+
+  document.getElementById("navUserName")?.textContent;
+}
+
+
+/* Load the actual daily attendance entered by Admin. */
+async function loadDailyAttendance(registerNo) {
+  const response = await fetch(
+    "/api/student/" +
+    encodeURIComponent(registerNo) +
+    "/daily-attendance",
+    { cache: "no-store" }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok || !data.success) {
+    throw new Error(
+      data.message || "Unable to retrieve daily attendance."
+    );
+  }
+
+  attendanceRecords = Array.isArray(data.attendance)
+    ? data.attendance
+    : [];
+
+  renderAttendance();
+}
+
+
+/* Normalize each daily record from SQLite. */
+function normalizeRecord(record) {
+  return {
+    id: record.id,
+    date: String(
+      record.attendance_date ||
+      record.attendanceDate ||
+      ""
+    ).slice(0, 10),
+    subject: String(record.subject || "Other").trim(),
+    status: String(record.status || "").trim()
+  };
+}
+
+
+/* Create subject-wise totals from the daily attendance records. */
+function renderAttendance() {
+  const records = attendanceRecords.map(normalizeRecord);
+
+  let present = 0;
+  let absent = 0;
+  let late = 0;
+
+  const subjects = new Map();
+
+  records.forEach(record => {
+    if (record.status === "Present") present++;
+    else if (record.status === "Absent") absent++;
+    else if (record.status === "Late") late++;
+
+    const key = record.subject.toLowerCase();
+
+    if (!subjects.has(key)) {
+      subjects.set(key, {
+        subject: record.subject,
+        total: 0,
+        present: 0,
+        absent: 0,
+        late: 0
+      });
+    }
+
+    const item = subjects.get(key);
+    item.total++;
+
+    if (record.status === "Present") item.present++;
+    else if (record.status === "Absent") item.absent++;
+    else if (record.status === "Late") item.late++;
+  });
+
+  const total = records.length;
+  const percentage = total > 0
+    ? ((present + late) / total) * 100
+    : 0;
+
+  document.getElementById("totalClasses").textContent = total;
+  document.getElementById("presentClasses").textContent = present;
+  document.getElementById("absentClasses").textContent = absent;
+  document.getElementById("attendancePercentage").textContent =
+    percentage.toFixed(2) + "%";
+
+  renderSubjectTable(Array.from(subjects.values()));
+  renderCalendar(records);
+
+  if (records.length === 0) {
+    showMessage(
+      "No daily attendance records have been entered for your register number yet."
+    );
+  } else {
+    showMessage(
+      "Attendance loaded from the college daily attendance records."
+    );
+  }
+}
+
+
+/* Display the subject-wise report. */
+function renderSubjectTable(subjects) {
+  const tbody = document.getElementById("attendanceTableBody");
+
+  if (subjects.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7">No attendance records found.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = subjects.map((item, index) => {
+    const percentage = item.total > 0
+      ? ((item.present + item.late) / item.total) * 100
+      : 0;
+
+    return `
+      <tr>
+        <td>${index + 1}</td>
+        <td class="subject-name">${escapeHTML(item.subject)}</td>
+        <td>${item.total}</td>
+        <td><span class="status present">${item.present}</span></td>
+        <td><span class="status absent">${item.absent}</span></td>
+        <td><span class="status late">${item.late}</span></td>
+        <td><strong>${percentage.toFixed(2)}%</strong></td>
+      </tr>
+    `;
+  }).join("");
+}
+
+
+/* Draw a calendar using dates returned by Admin's attendance records. */
+function renderCalendar(records) {
+  const year = calendarDate.getFullYear();
+  const month = calendarDate.getMonth();
+
+  const monthNames = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+  ];
+
+  document.getElementById("calendarMonth").textContent =
+    monthNames[month] + " " + year;
+
+  const calendar = document.getElementById("calendarDays");
+  calendar.innerHTML = "";
+
+  const dayStatuses = new Map();
+
+  records.forEach(record => {
+    if (!record.date) return;
+
+    const currentStatus = dayStatuses.get(record.date);
+    const status = record.status.toLowerCase();
+
+    /*
+      When multiple subjects have attendance on one day:
+      Absent is shown if any subject is marked Absent.
+      Otherwise Late is shown if a subject is Late.
+      Otherwise Present is shown.
+    */
+    if (status === "absent") {
+      dayStatuses.set(record.date, "absent");
+    } else if (status === "late" && currentStatus !== "absent") {
+      dayStatuses.set(record.date, "late");
+    } else if (!currentStatus) {
+      dayStatuses.set(record.date, "present");
+    }
+  });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const element = document.createElement("div");
+    element.className = "calendar-day muted";
+    element.textContent = new Date(year, month, 0).getDate() - firstDay + i + 1;
+    calendar.appendChild(element);
+  }
+
+  const today = new Date();
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const element = document.createElement("div");
+    element.className = "calendar-day";
+    element.textContent = day;
+
+    const key =
+      year + "-" +
+      String(month + 1).padStart(2, "0") + "-" +
+      String(day).padStart(2, "0");
+
+    const status = dayStatuses.get(key);
+
+    if (status) element.classList.add(status);
+
+    if (
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    ) {
+      element.classList.add("today");
+      element.title = "Today";
+    }
+
+    if (status) {
+      element.title = key + ": " + status;
+    }
+
+    calendar.appendChild(element);
+  }
+
+  const usedCells = firstDay + daysInMonth;
+  const remaining = (7 - (usedCells % 7)) % 7;
+
+  for (let day = 1; day <= remaining; day++) {
+    const element = document.createElement("div");
+    element.className = "calendar-day muted";
+    element.textContent = day;
+    calendar.appendChild(element);
+  }
+}
+
+
+document.getElementById("previousMonth").addEventListener("click", () => {
+  calendarDate.setMonth(calendarDate.getMonth() - 1);
+  renderCalendar(attendanceRecords.map(normalizeRecord));
+});
+
+
+document.getElementById("nextMonth").addEventListener("click", () => {
+  calendarDate.setMonth(calendarDate.getMonth() + 1);
+  renderCalendar(attendanceRecords.map(normalizeRecord));
+});
+
+
+/* Start the page. */
+document.addEventListener("DOMContentLoaded", async () => {
+  const storedStudent = getStoredStudent();
+
+  if (!storedStudent || !storedStudent.registerNo) {
+    showMessage(
+      "Student login information was not found. Please log in again.",
+      true
+    );
+
+    document.getElementById("attendanceTableBody").innerHTML = `
+      <tr>
+        <td colspan="7">Please log in to see your attendance.</td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  try {
+    await loadStudentProfile(storedStudent.registerNo);
+    await loadDailyAttendance(storedStudent.registerNo);
+  } catch (error) {
+    console.error("Attendance page error:", error);
+
+    showMessage(error.message, true);
+
+    document.getElementById("attendanceTableBody").innerHTML = `
+      <tr>
+        <td colspan="7">Unable to load attendance from the server.</td>
+      </tr>
+    `;
+  }
+});
+</script>
+
+</body>
+</html>

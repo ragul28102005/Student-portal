@@ -1,0 +1,154 @@
+
+/* Admin student form layout fix */
+
+#contentSection {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 24px;
+    overflow-x: hidden;
+}
+
+#contentSection *,
+#contentSection *::before,
+#contentSection *::after {
+    box-sizing: border-box;
+}
+
+#contentSection .form-container,
+#contentSection .form-card,
+#contentSection .student-form,
+#contentSection #updateStudentForm {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+#contentSection #updateStudentForm {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+}
+
+#contentSection .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    width: 100%;
+}
+
+#contentSection .form-group label {
+    display: block;
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#contentSection .form-group input,
+#contentSection .form-group select,
+#contentSection .form-group textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #f8fafc;
+    font: inherit;
+}
+
+#contentSection .form-group input:focus,
+#contentSection .form-group select:focus,
+#contentSection .form-group textarea:focus {
+    outline: 2px solid #38bdf8;
+    outline-offset: 1px;
+    border-color: #38bdf8;
+}
+
+#contentSection .gender-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 220px;
+    min-height: 150px;
+    padding: 16px;
+    border: 1px solid #334155;
+    border-radius: 14px;
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+#contentSection .profile-gender-image {
+    display: block;
+    width: 90px;
+    height: 90px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+#contentSection .message-box {
+    grid-column: 1 / -1;
+    width: 100%;
+    overflow-wrap: anywhere;
+}
+
+#contentSection .button-row {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+}
+
+#contentSection .button-row button {
+    min-height: 42px;
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#contentSection .primary-button {
+    background: #0284c7;
+    color: white;
+}
+
+#contentSection .danger-button {
+    background: #dc2626;
+    color: white;
+}
+
+#contentSection .primary-button:hover {
+    background: #0369a1;
+}
+
+#contentSection .danger-button:hover {
+    background: #b91c1c;
+}
+
+@media (max-width: 700px) {
+    #contentSection {
+        padding: 14px;
+    }
+
+    #contentSection #updateStudentForm {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #contentSection .message-box,
+    #contentSection .button-row {
+        grid-column: 1;
+    }
+
+    #contentSection .button-row button {
+        flex: 1 1 100%;
+    }
+}

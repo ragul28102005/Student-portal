@@ -1,0 +1,717 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Marks - Student Portal</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111b2d;
+      --text: #f3f6fc;
+      --muted: #a8bad3;
+      --border: #2b3a50;
+      --blue: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 18px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .marks-page {
+      width: 100%;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .page-header h1 {
+      margin: 0 0 7px;
+      font-size: 27px;
+      color: var(--text);
+    }
+
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .marks-card,
+    .student-information,
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+
+    .card-heading {
+      margin: 0 0 18px;
+      font-size: 19px;
+      color: var(--text);
+    }
+
+    .student-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .marks-info-box {
+      padding: 15px;
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0d1728;
+      color: var(--text);
+    }
+
+    .marks-info-box span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .marks-info-box strong {
+      color: var(--text);
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .semester-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .semester-tab {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 15px;
+      background: var(--card);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .semester-tab:hover {
+      border-color: #60a5fa;
+    }
+
+    .semester-tab.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 700px;
+      border-collapse: collapse;
+      color: var(--text);
+    }
+
+    thead {
+      background: #17314f;
+    }
+
+    th {
+      color: #fff;
+      padding: 13px 10px;
+      font-size: 12px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    td {
+      color: var(--text);
+      padding: 13px 10px;
+      text-align: center;
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    tbody tr:hover {
+      background: #17243a;
+    }
+
+    td.subject-name {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .grade {
+      font-weight: 800;
+    }
+
+    .pass {
+      color: #4ade80;
+      font-weight: 800;
+    }
+
+    .fail {
+      color: #f87171;
+      font-weight: 800;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .summary-item {
+      padding: 16px;
+      background: #0d1728;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      min-width: 0;
+    }
+
+    .summary-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .summary-item strong {
+      font-size: 22px;
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
+    .message {
+      padding: 13px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      background: #17243a;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.error {
+      background: #451a1a;
+      color: #fecaca;
+    }
+
+    .message.success {
+      background: #143323;
+      color: #bbf7d0;
+    }
+
+    .empty-message {
+      padding: 25px !important;
+      color: var(--muted) !important;
+      text-align: center !important;
+    }
+
+    .note {
+      margin-top: 17px;
+      padding: 14px;
+      background: #132643;
+      color: #b6d5ff;
+      border: 1px solid #2b4d79;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .student-grid,
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 550px) {
+      body {
+        padding: 10px;
+      }
+
+      .student-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .marks-card,
+      .student-information,
+      .summary-card {
+        padding: 14px;
+      }
+
+      .page-header h1 {
+        font-size: 23px;
+      }
+
+      .semester-tab {
+        padding: 9px 11px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="marks-page">
+
+  <header class="page-header">
+    <h1><i class="fa-solid fa-chart-column"></i> My Marks</h1>
+    <p>View marks entered by your college administrator.</p>
+  </header>
+
+  <div id="marksMessage" class="message" role="status" aria-live="polite">
+    Loading student information and marks...
+  </div>
+
+  <section class="student-information">
+    <h2 class="card-heading">
+      <i class="fa-solid fa-user-graduate"></i>
+      Student Information
+    </h2>
+
+    <div class="student-grid">
+      <div class="marks-info-box">
+        <span>Name</span>
+        <strong id="studentName">Loading...</strong>
+      </div>
+
+      <div class="marks-info-box">
+        <span>Register Number</span>
+        <strong id="studentRegisterNo">Loading...</strong>
+      </div>
+
+      <div class="marks-info-box">
+        <span>Department</span>
+        <strong id="studentDepartment">Loading...</strong>
+      </div>
+
+      <div class="marks-info-box">
+        <span>Year</span>
+        <strong id="studentYear">Loading...</strong>
+      </div>
+    </div>
+  </section>
+
+  <div class="semester-tabs" aria-label="Choose semester">
+    <button class="semester-tab active" data-semester="1">Semester I</button>
+    <button class="semester-tab" data-semester="2">Semester II</button>
+    <button class="semester-tab" data-semester="3">Semester III</button>
+    <button class="semester-tab" data-semester="4">Semester IV</button>
+    <button class="semester-tab" data-semester="5">Semester V</button>
+    <button class="semester-tab" data-semester="6">Semester VI</button>
+  </div>
+
+  <section class="marks-card">
+    <h2 class="card-heading" id="semesterTitle">Semester I - Mark Details</h2>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Subject</th>
+            <th>Internal (25)</th>
+            <th>External (75)</th>
+            <th>Total (100)</th>
+            <th>Grade</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+
+        <tbody id="marksTableBody">
+          <tr>
+            <td colspan="7" class="empty-message">Loading marks...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="summary-card">
+    <h2 class="card-heading">Semester Summary</h2>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span>Total Subjects</span>
+        <strong id="totalSubjects">0</strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Obtained Marks</span>
+        <strong id="obtainedMarks">0</strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Percentage</span>
+        <strong id="percentage">0%</strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Overall Result</span>
+        <strong id="overallResult">-</strong>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    <i class="fa-solid fa-circle-info"></i>
+    Marks displayed here are loaded from the college database.
+    Contact the college administration if your marks are missing or incorrect.
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+let studentRegisterNo = "";
+let allStudentMarks = [];
+let selectedSemester = 1;
+
+const semesterNames = [
+  "Semester I",
+  "Semester II",
+  "Semester III",
+  "Semester IV",
+  "Semester V",
+  "Semester VI"
+];
+
+
+function showMarksMessage(message, type = "") {
+  const element = document.getElementById("marksMessage");
+  element.textContent = message;
+  element.className = "message" + (type ? " " + type : "");
+  element.style.display = message ? "block" : "none";
+}
+
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+function getStoredStudent() {
+  try {
+    return JSON.parse(
+      sessionStorage.getItem("student") ||
+      localStorage.getItem("student") ||
+      "null"
+    );
+  } catch (error) {
+    return null;
+  }
+}
+
+
+/* Convert values such as "Semester 1", "Semester I", and "1" to 1. */
+function getSemesterNumber(value) {
+  const text = String(value ?? "").trim().toLowerCase();
+
+  const numericMatch = text.match(/(?:semester\s*)?([1-6])/);
+  if (numericMatch) {
+    return Number(numericMatch[1]);
+  }
+
+  const romanMap = {
+    "semester i": 1,
+    "semester ii": 2,
+    "semester iii": 3,
+    "semester iv": 4,
+    "semester v": 5,
+    "semester vi": 6,
+    "i": 1,
+    "ii": 2,
+    "iii": 3,
+    "iv": 4,
+    "v": 5,
+    "vi": 6
+  };
+
+  return romanMap[text] || 0;
+}
+
+
+function getTotal(mark) {
+  const storedTotal = Number(mark.total);
+
+  if (mark.total !== undefined && mark.total !== null &&
+      mark.total !== "" && Number.isFinite(storedTotal)) {
+    return storedTotal;
+  }
+
+  return Number(mark.internal || 0) + Number(mark.external || 0);
+}
+
+
+function getGrade(total) {
+  if (total >= 90) return "A+";
+  if (total >= 80) return "A";
+  if (total >= 70) return "B+";
+  if (total >= 60) return "B";
+  if (total >= 50) return "C";
+  if (total >= 40) return "D";
+  return "F";
+}
+
+
+function getResult(mark) {
+  const internal = Number(mark.internal || 0);
+  const external = Number(mark.external || 0);
+  const total = getTotal(mark);
+
+  return internal >= 10 && external >= 30 && total >= 40
+    ? "PASS"
+    : "FAIL";
+}
+
+
+/* Fetch student profile, then fetch the same student's marks. */
+async function loadStudentMarks() {
+  const storedStudent = getStoredStudent();
+
+  if (!storedStudent || !storedStudent.registerNo) {
+    showMarksMessage(
+      "Student login information was not found. Please log in again.",
+      "error"
+    );
+
+    renderEmptyMarks("Please log in to view your marks.");
+    return;
+  }
+
+  studentRegisterNo = String(storedStudent.registerNo).trim();
+
+  try {
+    const profileResponse = await fetch(
+      "/api/student/" + encodeURIComponent(studentRegisterNo),
+      { cache: "no-store" }
+    );
+
+    const profileData = await profileResponse.json();
+
+    if (!profileResponse.ok || !profileData.success || !profileData.student) {
+      throw new Error(
+        profileData.message || "Unable to load student information."
+      );
+    }
+
+    const student = profileData.student;
+
+    document.getElementById("studentName").textContent =
+      student.name || "-";
+
+    document.getElementById("studentRegisterNo").textContent =
+      student.registerNo || studentRegisterNo;
+
+    document.getElementById("studentDepartment").textContent =
+      student.department || "-";
+
+    document.getElementById("studentYear").textContent =
+      student.year || "-";
+
+    /*
+      This is the API used by the existing app.js.
+      Admin saves marks in the marks table; this route reads them.
+    */
+    const marksResponse = await fetch(
+      "/api/student/" +
+      encodeURIComponent(studentRegisterNo) +
+      "/marks",
+      {
+        cache: "no-store",
+        headers: { "Accept": "application/json" }
+      }
+    );
+
+    const marksData = await marksResponse.json();
+
+    if (!marksResponse.ok || !marksData.success) {
+      throw new Error(
+        marksData.message || "Unable to retrieve marks from the server."
+      );
+    }
+
+    allStudentMarks = Array.isArray(marksData.marks)
+      ? marksData.marks
+      : [];
+
+    document.querySelectorAll(".semester-tab").forEach(button => {
+      button.addEventListener("click", () => {
+        selectedSemester = Number(button.dataset.semester);
+
+        document.querySelectorAll(".semester-tab").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        renderSelectedSemester();
+      });
+    });
+
+    renderSelectedSemester();
+
+    if (allStudentMarks.length === 0) {
+      showMarksMessage(
+        "Your profile loaded successfully, but the administrator has not added marks for this student yet."
+      );
+    } else {
+      showMarksMessage(
+        "Marks loaded successfully from the college database.",
+        "success"
+      );
+    }
+
+  } catch (error) {
+    console.error("Student marks loading error:", error);
+
+    showMarksMessage(
+      error.message || "Unable to connect to the marks server.",
+      "error"
+    );
+
+    renderEmptyMarks("Unable to load marks. Please try again later.");
+  }
+}
+
+
+function renderSelectedSemester() {
+  const semesterMarks = allStudentMarks.filter(mark =>
+    getSemesterNumber(mark.semester) === selectedSemester
+  );
+
+  document.getElementById("semesterTitle").textContent =
+    semesterNames[selectedSemester - 1] + " - Mark Details";
+
+  renderMarksTable(semesterMarks);
+  renderSummary(semesterMarks);
+}
+
+
+function renderMarksTable(marks) {
+  const tbody = document.getElementById("marksTableBody");
+
+  if (!marks.length) {
+    renderEmptyMarks(
+      "No marks have been added for " +
+      semesterNames[selectedSemester - 1] + "."
+    );
+    return;
+  }
+
+  tbody.innerHTML = marks.map((mark, index) => {
+    const internal = Number(mark.internal || 0);
+    const external = Number(mark.external || 0);
+    const total = getTotal(mark);
+    const grade = getGrade(total);
+    const result = getResult(mark);
+
+    return `
+      <tr>
+        <td>${index + 1}</td>
+        <td class="subject-name">${escapeHTML(mark.subject || "-")}</td>
+        <td>${internal}</td>
+        <td>${external}</td>
+        <td><strong>${total}</strong></td>
+        <td class="grade">${grade}</td>
+        <td class="${result === "PASS" ? "pass" : "fail"}">${result}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+
+function renderEmptyMarks(message) {
+  document.getElementById("marksTableBody").innerHTML = `
+    <tr>
+      <td colspan="7" class="empty-message">${escapeHTML(message)}</td>
+    </tr>
+  `;
+
+  document.getElementById("totalSubjects").textContent = "0";
+  document.getElementById("obtainedMarks").textContent = "0";
+  document.getElementById("percentage").textContent = "0%";
+  document.getElementById("overallResult").textContent = "-";
+}
+
+
+function renderSummary(marks) {
+  const totalSubjects = marks.length;
+
+  const obtained = marks.reduce(
+    (sum, mark) => sum + getTotal(mark),
+    0
+  );
+
+  const maximum = totalSubjects * 100;
+
+  const percentage = maximum > 0
+    ? (obtained / maximum) * 100
+    : 0;
+
+  const hasFailed = marks.some(mark => getResult(mark) === "FAIL");
+
+  let overallResult = "-";
+
+  if (totalSubjects > 0) {
+    overallResult = hasFailed ? "FAIL" : "PASS";
+  }
+
+  document.getElementById("totalSubjects").textContent =
+    totalSubjects;
+
+  document.getElementById("obtainedMarks").textContent =
+    obtained + " / " + maximum;
+
+  document.getElementById("percentage").textContent =
+    percentage.toFixed(2) + "%";
+
+  document.getElementById("overallResult").textContent =
+    overallResult;
+}
+
+
+document.addEventListener("DOMContentLoaded", loadStudentMarks);
+</script>
+
+</body>
+</html>

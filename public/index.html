@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Student Login - Erode Arts and Science College
+    </title>
+
+
+    <style>
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: Arial, sans-serif;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071a35,
+                    #123d70
+                );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+        .login-container {
+
+            width: 900px;
+
+            max-width: 95%;
+
+            min-height: 500px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            display: flex;
+
+            box-shadow:
+                0 10px 40px
+                rgba(0, 0, 0, 0.3);
+
+        }
+
+
+        /* LEFT SIDE */
+
+        .left {
+
+            width: 50%;
+
+            background: #0b2a50;
+
+            color: white;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 40px;
+
+            text-align: center;
+
+        }
+
+
+        .left img {
+
+            width: 170px;
+
+            height: 170px;
+
+            object-fit: contain;
+
+            background: white;
+
+            border-radius: 50%;
+
+            padding: 10px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .left h1 {
+
+            font-size: 27px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .left p {
+
+            font-size: 16px;
+
+            margin-top: 5px;
+
+        }
+
+
+        /* RIGHT SIDE */
+
+        .right {
+
+            width: 50%;
+
+            padding: 60px 45px;
+
+        }
+
+
+        .right h2 {
+
+            text-align: center;
+
+            color: #0b2a50;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+            color: #333;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            margin-bottom: 18px;
+
+            font-size: 15px;
+
+        }
+
+
+        input:focus {
+
+            outline: none;
+
+            border-color: #174f8c;
+
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #0b2a50;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+        }
+
+
+        button:hover {
+
+            background: #174f8c;
+
+        }
+
+
+        #loginMessage {
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            font-weight: bold;
+
+        }
+
+
+        .links {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+        }
+
+
+        .links a {
+
+            color: #0b2a50;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+        }
+
+
+        .links a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        .register-link {
+
+            margin-top: 15px;
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .login-container {
+
+                flex-direction: column;
+
+            }
+
+
+            .left,
+            .right {
+
+                width: 100%;
+
+            }
+
+
+            .left {
+
+                padding: 30px;
+
+            }
+
+
+            .right {
+
+                padding: 40px 30px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <!-- LEFT SIDE -->
+
+    <div class="left">
+
+        <img
+            src="erode-arts-science-college-logo.png"
+            alt="Erode Arts and Science College Logo"
+        >
+
+
+        <h1>
+            Erode Arts and Science College
+        </h1>
+
+
+        <p>
+            Erode
+        </p>
+
+
+        <p style="margin-top: 20px;">
+            Student Portal
+        </p>
+
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right">
+
+
+        <h2>
+            Student Login
+        </h2>
+
+
+        <!-- STUDENT LOGIN FORM -->
+
+        <form id="loginForm">
+
+
+            <label for="registerNo">
+                Register Number
+            </label>
+
+
+            <input
+                type="text"
+                id="registerNo"
+                placeholder="Enter Register Number"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter Password"
+                required
+            >
+
+
+            <button type="submit">
+                Login
+            </button>
+
+
+        </form>
+
+
+        <p id="loginMessage"></p>
+
+
+        <!-- LINKS -->
+
+        <div class="links">
+
+
+            <div class="register-link">
+
+                <!-- REAL ADMIN LOGIN -->
+
+                <a href="admin-login.html">
+                    Admin Login
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+    // =====================================
+    // STUDENT LOGIN
+    // =====================================
+
+    document
+        .getElementById("loginForm")
+        .addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const registerNo =
+                    document
+                        .getElementById("registerNo")
+                        .value
+                        .trim();
+
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                const message =
+                    document
+                        .getElementById("loginMessage");
+
+
+                try {
+
+
+                    const response =
+                        await fetch(
+                            "/api/login",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        registerNo:
+                                            registerNo,
+
+                                        password:
+                                            password
+
+                                    })
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (result.success) {
+
+
+                        message.style.color =
+                            "green";
+
+
+                        message.textContent =
+                            "Login successful!";
+
+
+                        // Save student information
+
+                        sessionStorage.setItem(
+                            "student",
+                            JSON.stringify(
+                                result.student
+                            )
+                        );
+
+
+                        // Open student dashboard
+
+                        setTimeout(
+                            function() {
+
+                                window.location.href =
+                                    "dashboard.html";
+
+                            },
+                            500
+                        );
+
+
+                    } else {
+
+
+                        message.style.color =
+                            "red";
+
+
+                        message.textContent =
+                            result.message;
+
+                    }
+
+
+                } catch (error) {
+
+
+                    console.error(
+                        "Student login error:",
+                        error
+                    );
+
+
+                    message.style.color =
+                        "red";
+
+
+                    message.textContent =
+                        "Unable to connect to server.";
+
+                }
+
+            }
+        );
+
+
+</script>
+
+
+</body>
+
+</html>
