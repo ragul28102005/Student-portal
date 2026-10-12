@@ -10,7 +10,7 @@ const crypto = require("crypto");
 const db = require("./database");
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // ============================================================
 // ADMIN SESSION
@@ -3585,7 +3585,7 @@ app.use(
 const server =
     app.listen(
         PORT,
-        "127.0.0.1",
+        "0.0.0.0",
         () => {
 
             console.log("");
